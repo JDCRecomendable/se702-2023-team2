@@ -15,6 +15,7 @@ wss.on('connection', ws => {
     // Only text messages are required.
     wss.clients.forEach(client => {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
+        console.log(message, 19);
         client.send(message);
       }
     });
