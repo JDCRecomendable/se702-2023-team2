@@ -1,12 +1,11 @@
-const getUserMedia = require("getusermedia");
-const Peer = require("simple-peer");
+import getUserMedia from "getusermedia";
+import Peer from "simple-peer";
 
 let peer;
 
-// Get local video stream
 getUserMedia({ video: true, audio: false }, (err, stream) => {
   if (err) {
-    console.error("Error in getUserMedia:", err);
+    console.error(`Error in getUserMedia: ${err}`);
     return;
   }
 
@@ -19,10 +18,10 @@ getUserMedia({ video: true, audio: false }, (err, stream) => {
     stream,
   });
 
-  peer.on("error", (err) => console.error("Error in peer:", err));
+  peer.on("error", (err) => console.error(`Error in peer: ${err}`));
 
   peer.on("signal", (data) => {
-    console.log("Signal event fired:", data);
+    console.log(`Signal event fired: ${data}`);
     document.getElementById("yourId").value = JSON.stringify(data);
   });
 
