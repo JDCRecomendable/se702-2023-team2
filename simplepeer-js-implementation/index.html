@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Video Conferencing</title>
+  </head>
+  <body>
+    <div>
+        <h2>This is me:</h2>
+        <video id="localVideo" autoplay></video>
+    </div>
+    <div>
+        <h2>This is the other person:</h2>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <label>Your ID:</label><br/>
+    <textarea id="yourId"></textarea><br/>
+    <label>Other ID:</label><br/>
+    <textarea id="otherId"></textarea>
+    <button id="connect">Connect</button><br/>
+    
+    <script src="bundle.js"></script>
+  </body>
+</html>

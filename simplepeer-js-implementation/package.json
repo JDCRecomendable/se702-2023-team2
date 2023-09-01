@@ -1,0 +1,21 @@
+{
+  "name": "simplepeer-js-implementation",
+  "version": "1.0.0",
+  "description": "Implementation of a webrtc video conferencing application using SimplePeer framework. The project uses npm and vanillaJS.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "getusermedia": "^2.0.1",
+    "simple-peer": "^9.11.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
