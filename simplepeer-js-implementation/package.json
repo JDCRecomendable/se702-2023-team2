@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "getusermedia": "^2.0.1",
-    "simple-peer": "^9.11.1"
+    "simple-peer": "^9.11.1",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "webpack": "^5.88.2",
