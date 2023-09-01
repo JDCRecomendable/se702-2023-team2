@@ -4,7 +4,8 @@
   "description": "Implementation of a webrtc video conferencing application using SimplePeer framework. The project uses npm and vanillaJS.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "signal": "node ./signal-server/server.js"
   },
   "keywords": [],
   "author": "",
