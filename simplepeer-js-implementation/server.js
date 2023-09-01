@@ -1,10 +1,12 @@
-import WebSocket from 'ws';
+const WebSocket = require('ws');
 
 /**
  * Signal server simple implementation to establish the connection between the two peers.
  * After the initial connection is established, the signal server is not used further.
  */
 const wss = new WebSocket.Server({ port: 8080 });
+
+console.log("signal server running...");
 
 wss.on('connection', ws => {
   ws.on('message', message => {
