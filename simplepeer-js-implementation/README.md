@@ -12,3 +12,12 @@ then run the application:
 ```npm run start```
 Now there is no longer a need to manually connect the two peers, the signal server takes care of it.
 
+### To run:
+1. Start the signal server with ```npm run signal```.
+2. Start the application with ```npm run start```.
+3. Open two browsers: localhost:8081/#init in one browser and localhost:8081 in the second browser. *
+4. The browser with /#init appended to url is your client, the other one simulates the other peer.
+
+### Note: 
+* The signal server will run at port 8080, that means when you go ```npm run start```. Therefore, the application will likely run at next available which is 8081. 
+But that might not be the case, so check the console.log statements for what port it opens at.
