@@ -1,66 +1,83 @@
-import getUserMedia from "getusermedia";
 import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
 let ws;
 let peer;
+let messageBuffer = [];  // Buffer for incoming messages
 
-// Wait for the DOM to load before initializing WebSocket and Peer connections
 document.addEventListener("DOMContentLoaded", () => {
-  ws = new WebSocket("ws://localhost:8080"); // Connect to signaling server at port 8080
+  ws = new WebSocket("ws://localhost:8080");
 
   ws.onopen = () => {
     console.log("Connected to the signaling server");
+
+    if (location.hash === "#init") {
+      ws.send(JSON.stringify({ type: 'initiator' }));
+    }
+
     initializePeer();
     showConnectionStatus(true);
   };
 
   ws.onmessage = (message) => {
-    if (message.data instanceof Blob) {
-      const reader = new FileReader();
-      reader.readAsText(message.data);
-      reader.onload = () => {
-        const data = JSON.parse(reader.result);
-        peer.signal(data);
-      };
-    } else {
-      const data = JSON.parse(message.data);
-      peer.signal(data);
+    if (!peer) {
+      messageBuffer.push(message);
+      return;
     }
+    processMessage(message);
   };
 });
 
 const initializePeer = () => {
-  getUserMedia({ video: true, audio: false }, (err, stream) => {
-    if (err) {
+  // Using the modern API and promises
+  navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    .then(stream => {
+      const localVideo = document.getElementById("localVideo");
+      localVideo.srcObject = stream;
+
+      peer = new Peer({
+        initiator: location.hash === "#init",
+        trickle: false,
+        stream,
+      });
+
+      // Process any buffered messages
+      while (messageBuffer.length > 0) {
+        processMessage(messageBuffer.shift());
+      }
+
+      peer.on("error", (err) => {
+        console.error(`Error in peer: ${err}`);
+        showConnectionStatus(false);
+      });
+
+      peer.on("signal", (data) => {
+        ws.send(JSON.stringify(data));
+      });
+
+      peer.on("stream", (stream) => {
+        const remoteVideo = document.getElementById("remoteVideo");
+        remoteVideo.srcObject = stream;
+      });
+    })
+    .catch(err => {
       console.error(`Error in getUserMedia: ${err}`);
-      return;
-    }
-
-    const localVideo = document.getElementById("localVideo");
-    localVideo.srcObject = stream;
-
-    peer = new Peer({
-      initiator: location.hash === "#init",
-      trickle: false,
-      stream,
     });
+};
 
-    peer.on("error", (err) => {
-      console.error(`Error in peer: ${err}`);
-      showConnectionStatus(false);
-    });
-
-    peer.on("signal", (data) => {
-      ws.send(JSON.stringify(data));
-    });
-
-    peer.on("stream", (stream) => {
-      const remoteVideo = document.getElementById("remoteVideo");
-      remoteVideo.srcObject = stream;
-    });
-  });
+const processMessage = (message) => {
+  if (message.data instanceof Blob) {
+    const reader = new FileReader();
+    reader.readAsText(message.data);
+    reader.onload = () => {
+      const data = JSON.parse(reader.result);
+      peer.signal(data);
+    };
+  } else {
+    const data = JSON.parse(message.data);
+    peer.signal(data);
+  }
 };
 
 const showConnectionStatus = (successful) => {
