@@ -6,6 +6,10 @@ let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
 
+// initialize the canvas
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
 document.addEventListener("DOMContentLoaded", () => {
   ws = new WebSocket("ws://localhost:8080");
 
@@ -45,6 +49,35 @@ const initializePeer = () => {
     .then(stream => {
       const localVideo = document.getElementById("localVideo");
       localVideo.srcObject = stream;
+
+      // sourcing the div inside which the canvas is displayed
+      const canvasContainer = document.getElementById("canvasContainer");
+
+      // append the canvas to the parent div
+      canvasContainer.appendChild(canvas);
+
+      // canvas config
+      // setting the size of the canvas as the same as the video stream from the webcam
+      const videoTrack = stream.getVideoTracks()[0];
+      const settings = videoTrack.getSettings();
+      canvas.width = settings.width;
+      canvas.height = settings.height;
+
+      // Draw video onto canvas
+      const drawVideo = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Scale the video. Change 1, 1 to other values to zoom in/out.
+        ctx.setTransform(1.25, 0, 0, 1.25, 0, 0);
+
+        ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawVideo);
+      };
+
+      drawVideo();
+
+      // framerate of the canvas stream
+      const canvasStream = canvas.captureStream(30);
 
       peer = new Peer({
         initiator: location.hash === "#init",
