@@ -10,8 +10,18 @@ let messageBuffer = [];  // Buffer for incoming messages
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
 
+// declaring variables for the zoom of stream in x and y direction 
+let zoom = 1.25;
+
 document.addEventListener("DOMContentLoaded", () => {
   ws = new WebSocket("ws://localhost:8080");
+
+  // listening for any change in the sliders in ui
+  const zoomSlider = document.getElementById("zoomX");
+
+  zoomSlider.addEventListener("input", (event) => {
+    zoom = parseFloat(event.target.value);
+  });
 
   ws.onopen = () => {
     console.log("Connected to the signaling server");
@@ -63,13 +73,13 @@ const initializePeer = () => {
       canvas.width = settings.width;
       canvas.height = settings.height;
 
-      // Draw video onto canvas
+      // Draw video onto canvas, with zoom based on the slider values for the x and y direction
       const drawVideo = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Scale the video. Change 1, 1 to other values to zoom in/out.
-        ctx.setTransform(1.25, 0, 0, 1.25, 0, 0);
-
+      
+        // Use zoomX and zoomY variables
+        ctx.setTransform(zoom, 0, 0, zoom, 0, 0);
+      
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
         requestAnimationFrame(drawVideo);
       };
