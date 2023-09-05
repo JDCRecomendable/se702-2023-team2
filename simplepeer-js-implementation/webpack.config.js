@@ -8,14 +8,16 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
+    alias: {
+      'process': 'process/browser'
+    },
     fallback: {
       "stream": "stream-browserify"
     }
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': '{}',
-      process: {}
+    new webpack.ProvidePlugin({
+        process: 'process/browser',
     }),
   ],
   devServer: {
