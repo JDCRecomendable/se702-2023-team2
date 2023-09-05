@@ -80,3 +80,14 @@ const showConnectionStatus = (successful) => {
     connectionStatusDiv.style.display = "none";
   }, MESSAGE_TIMEOUT);
 };
+
+// Handles emoji button clicks
+const emojiContainer = document.getElementById('emoji-container');
+
+emojiContainer.addEventListener("click", (event) => {
+  if (event.target.tagName === "BUTTON") {
+    const emoji = event.target.textContent;
+    // TODO: replace with actual logic
+    console.log(`clicked ${emoji}`);
+  }
+});
