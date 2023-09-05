@@ -120,7 +120,7 @@ const initializePeer = () => {
         const messages = document.getElementById("messages");
         messages.innerHTML += `<p>Other: ${message}</p>`;
       });
-
+    
     })
     .catch(err => {
       console.error(`Error in getUserMedia: ${err.message}`);
