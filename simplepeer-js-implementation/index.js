@@ -27,6 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     processMessage(message);
   };
+
+  // Handle the send button click event
+  const sendButton = document.getElementById("sendButton");
+  const yourMessage = document.getElementById("yourMessage");
+  const messages = document.getElementById("messages");
+
+  sendButton.addEventListener("click", () => {
+    const message = yourMessage.value;
+    sendMessage(message);
+  });
 });
 
 const initializePeer = () => {
@@ -60,9 +70,17 @@ const initializePeer = () => {
         const remoteVideo = document.getElementById("remoteVideo");
         remoteVideo.srcObject = stream;
       });
+
+      // New event handler for receiving data
+      peer.on("data", (data) => {
+        const message = data.toString();
+        const messages = document.getElementById("messages");
+        messages.innerHTML += `<p>Other: ${message}</p>`;
+      });
+
     })
     .catch(err => {
-      console.error(`Error in getUserMedia: ${err}`);
+      console.error(`Error in getUserMedia: ${err.message}`);
     });
 };
 
@@ -96,4 +114,11 @@ const showConnectionStatus = (successful) => {
   setTimeout(() => {
     connectionStatusDiv.style.display = "none";
   }, MESSAGE_TIMEOUT);
+};
+
+// Function to send text message to peer
+const sendMessage = (message) => {
+  const messages = document.getElementById("messages");
+  peer.send(message);
+  messages.innerHTML += `<p>You: ${message}</p>`;
 };
