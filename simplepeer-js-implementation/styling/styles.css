@@ -5,7 +5,12 @@ body {
     background-color: #f4f4f4;
 }
 
+.parent-container {
+    display: flex;
+}
+
 .video-container {
+    flex-grow: 1;
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
@@ -57,4 +62,16 @@ button:hover {
     color: white;
     z-index: 1000;
     margin-bottom: 5px;
+}
+
+aside {
+    width: 120px;
+}
+
+aside button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 60px;
+    cursor: pointer;
+    border-radius: 8px;
 }
