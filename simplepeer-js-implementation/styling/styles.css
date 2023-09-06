@@ -108,3 +108,7 @@ aside button {
     visibility: visible;
     opacity: 1;
 }
+
+.reset-button {
+    font-size: medium;
+}

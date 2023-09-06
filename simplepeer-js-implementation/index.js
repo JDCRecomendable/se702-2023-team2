@@ -161,6 +161,7 @@ const showConnectionStatus = (successful) => {
 
 // Handles emoji button clicks
 const emojiButtons = document.querySelectorAll('.emoji-button');
+const resetButton = document.getElementById('reset-button');
 
 emojiButtons.forEach((button) => {
   const tooltipText = button.nextElementSibling;
@@ -173,6 +174,12 @@ emojiButtons.forEach((button) => {
     button.parentElement.classList.add("active"); // Add the 'active' class to keep the tooltip visible
     const emoji = event.target.textContent;
     console.log(`clicked ${emoji}`);
+  });
+
+  resetButton.addEventListener("click", () => {
+    clickCount = 0;
+    tooltipText.textContent = `Clicked: ${clickCount}`;
+    button.parentElement.classList.remove("active"); // Remove the 'active' class to hide the tooltip
   });
 });
 
