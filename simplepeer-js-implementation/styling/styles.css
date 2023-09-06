@@ -81,7 +81,7 @@ aside button {
     display: inline-block;
 }
 
-.tooltip-text {
+.tooltip-content {
     visibility: hidden;
     background-color: #333;
     color: #fff;
@@ -104,7 +104,7 @@ aside button {
     }
 }
 
-.tooltip-container.active .tooltip-text {
+.tooltip-container.active .tooltip-content {
     visibility: visible;
     opacity: 1;
 }
@@ -112,3 +112,20 @@ aside button {
 .reset-button {
     font-size: medium;
 }
+
+/* CSS for the progress bar */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    background-color: green;
+    transition: width 0.3s;
+  }

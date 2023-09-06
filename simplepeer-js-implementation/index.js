@@ -160,26 +160,39 @@ const showConnectionStatus = (successful) => {
 };
 
 // Handles emoji button clicks
-const emojiButtons = document.querySelectorAll('.emoji-button');
+const tooltipContainers = document.querySelectorAll('.tooltip-container');
 const resetButton = document.getElementById('reset-button');
 
-emojiButtons.forEach((button) => {
-  const tooltipText = button.nextElementSibling;
+tooltipContainers.forEach((container) => {
+  const button = container.querySelector('.emoji-button');
+  const tooltipText = container.querySelector('.tooltip-text');
+  const progressFill = container.querySelector('.progress-fill');
 
   let clickCount = 0;
 
   button.addEventListener("click", (event) => {
     clickCount++;
+
+    // Update progress bar - max width is 10 clicks
+    const maxWidth = 10;
+    const width = Math.min((clickCount / maxWidth) * 100, 100);
+    progressFill.style.width = width + '%';
+
+    // Update tooltip text
     tooltipText.textContent = `Clicked: ${clickCount}`;
-    button.parentElement.classList.add("active"); // Add the 'active' class to keep the tooltip visible
+    button.parentElement.classList.add("active");
+
+    // TODO: Send emoji to peer - currently just logs to console
     const emoji = event.target.textContent;
     console.log(`clicked ${emoji}`);
   });
 
+  // Reset count and progress bar on reset button click
   resetButton.addEventListener("click", () => {
     clickCount = 0;
     tooltipText.textContent = `Clicked: ${clickCount}`;
-    button.parentElement.classList.remove("active"); // Remove the 'active' class to hide the tooltip
+    progressFill.style.width = '0%';
+    button.parentElement.classList.remove("active");
   });
 });
 
