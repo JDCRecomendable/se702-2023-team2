@@ -1,66 +1,144 @@
-import getUserMedia from "getusermedia";
 import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
 let ws;
 let peer;
+let messageBuffer = [];  // Buffer for incoming messages
 
-// Wait for the DOM to load before initializing WebSocket and Peer connections
+// initialize the canvas
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
+// declaring variables for the zoom of stream in x and y direction 
+let zoom = 1.25;
+
 document.addEventListener("DOMContentLoaded", () => {
-  ws = new WebSocket("ws://localhost:8080"); // Connect to signaling server at port 8080
+  ws = new WebSocket("ws://localhost:8080");
+
+  // listening for any change in the sliders in ui
+  const zoomSlider = document.getElementById("zoomX");
+
+  zoomSlider.addEventListener("input", (event) => {
+    zoom = parseFloat(event.target.value);
+  });
 
   ws.onopen = () => {
     console.log("Connected to the signaling server");
+
+    if (location.hash === "#init") {
+      ws.send(JSON.stringify({ type: 'initiator' }));
+    }
+
     initializePeer();
     showConnectionStatus(true);
   };
 
   ws.onmessage = (message) => {
-    if (message.data instanceof Blob) {
-      const reader = new FileReader();
-      reader.readAsText(message.data);
-      reader.onload = () => {
-        const data = JSON.parse(reader.result);
-        peer.signal(data);
-      };
-    } else {
-      const data = JSON.parse(message.data);
-      peer.signal(data);
+    if (!peer) {
+      messageBuffer.push(message);
+      return;
     }
+    processMessage(message);
   };
+
+  // Handle the send button click event
+  const sendButton = document.getElementById("sendButton");
+  const yourMessage = document.getElementById("yourMessage");
+  const messages = document.getElementById("messages");
+
+  sendButton.addEventListener("click", () => {
+    const message = yourMessage.value;
+    sendMessage(message);
+  });
 });
 
 const initializePeer = () => {
-  getUserMedia({ video: true, audio: false }, (err, stream) => {
-    if (err) {
-      console.error(`Error in getUserMedia: ${err}`);
-      return;
-    }
+  // Using the modern API and promises
+  navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    .then(stream => {
+      const localVideo = document.getElementById("localVideo");
+      localVideo.srcObject = stream;
 
-    const localVideo = document.getElementById("localVideo");
-    localVideo.srcObject = stream;
+      // sourcing the div inside which the canvas is displayed
+      const canvasContainer = document.getElementById("canvasContainer");
 
-    peer = new Peer({
-      initiator: location.hash === "#init",
-      trickle: false,
-      stream,
+      // append the canvas to the parent div
+      canvasContainer.appendChild(canvas);
+
+      // canvas config
+      // setting the size of the canvas as the same as the video stream from the webcam
+      const videoTrack = stream.getVideoTracks()[0];
+      const settings = videoTrack.getSettings();
+      canvas.width = settings.width;
+      canvas.height = settings.height;
+
+      // Draw video onto canvas, with zoom based on the slider values for the x and y direction
+      const drawVideo = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+        // Use zoomX and zoomY variables
+        ctx.setTransform(zoom, 0, 0, zoom, 0, 0);
+      
+        ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawVideo);
+      };
+
+      drawVideo();
+
+      // framerate of the canvas stream
+      const canvasStream = canvas.captureStream(30);
+
+      peer = new Peer({
+        initiator: location.hash === "#init",
+        trickle: false,
+        stream,
+      });
+
+      // Process any buffered messages
+      while (messageBuffer.length > 0) {
+        processMessage(messageBuffer.shift());
+      }
+
+      peer.on("error", (err) => {
+        console.error(`Error in peer: ${err}`);
+        showConnectionStatus(false);
+      });
+
+      peer.on("signal", (data) => {
+        ws.send(JSON.stringify(data));
+      });
+
+      peer.on("stream", (stream) => {
+        const remoteVideo = document.getElementById("remoteVideo");
+        remoteVideo.srcObject = stream;
+      });
+
+      // New event handler for receiving data
+      peer.on("data", (data) => {
+        const message = data.toString();
+        const messages = document.getElementById("messages");
+        messages.innerHTML += `<p>Other: ${message}</p>`;
+      });
+    
+    })
+    .catch(err => {
+      console.error(`Error in getUserMedia: ${err.message}`);
     });
+};
 
-    peer.on("error", (err) => {
-      console.error(`Error in peer: ${err}`);
-      showConnectionStatus(false);
-    });
-
-    peer.on("signal", (data) => {
-      ws.send(JSON.stringify(data));
-    });
-
-    peer.on("stream", (stream) => {
-      const remoteVideo = document.getElementById("remoteVideo");
-      remoteVideo.srcObject = stream;
-    });
-  });
+const processMessage = (message) => {
+  if (message.data instanceof Blob) {
+    const reader = new FileReader();
+    reader.readAsText(message.data);
+    reader.onload = () => {
+      const data = JSON.parse(reader.result);
+      peer.signal(data);
+    };
+  } else {
+    const data = JSON.parse(message.data);
+    peer.signal(data);
+  }
 };
 
 const showConnectionStatus = (successful) => {
@@ -91,3 +169,10 @@ emojiContainer.addEventListener("click", (event) => {
     console.log(`clicked ${emoji}`);
   }
 });
+
+// Function to send text message to peer
+const sendMessage = (message) => {
+  const messages = document.getElementById("messages");
+  peer.send(message);
+  messages.innerHTML += `<p>You: ${message}</p>`;
+};
