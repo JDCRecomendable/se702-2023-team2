@@ -160,14 +160,20 @@ const showConnectionStatus = (successful) => {
 };
 
 // Handles emoji button clicks
-const emojiContainer = document.getElementById('emoji-container');
+const emojiButtons = document.querySelectorAll('.emoji-button');
 
-emojiContainer.addEventListener("click", (event) => {
-  if (event.target.tagName === "BUTTON") {
+emojiButtons.forEach((button) => {
+  const tooltipText = button.nextElementSibling;
+
+  let clickCount = 0;
+
+  button.addEventListener("click", (event) => {
+    clickCount++;
+    tooltipText.textContent = `Clicked: ${clickCount}`;
+    button.parentElement.classList.add("active"); // Add the 'active' class to keep the tooltip visible
     const emoji = event.target.textContent;
-    // TODO: replace with actual logic
     console.log(`clicked ${emoji}`);
-  }
+  });
 });
 
 // Function to send text message to peer

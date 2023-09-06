@@ -75,3 +75,36 @@ aside button {
     cursor: pointer;
     border-radius: 8px;
 }
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    top: 25%;
+    width: auto;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent #333 transparent transparent;
+    }
+}
+
+.tooltip-container.active .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
