@@ -58,3 +58,7 @@ button:hover {
     z-index: 1000;
     margin-bottom: 5px;
 }
+
+#canvasContainer{
+    z-index: 200;
+}

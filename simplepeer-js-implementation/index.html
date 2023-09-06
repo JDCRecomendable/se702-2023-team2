@@ -10,7 +10,8 @@
     <div class="video-container">
       <div class="video-box">
         <h2>This is me:</h2>
-        <video id="localVideo" autoplay></video>
+        <video id="localVideo" autoplay hidden></video>
+        <div id="canvasContainer"></div>
       </div>
       <div class="video-box">
         <h2>This is the other person:</h2>
@@ -23,7 +24,6 @@
       <button id="sendButton">Send</button>
     </div>
     <h2>Altered Stream - via canvas</h2>
-    <div id="canvasContainer"></div>
     <div id="zoomControls">
       <label for="zoomX">Zoom:</label>
       <input type="range" id="zoomX" min="0.5" max="3" step="0.05" value="1.25">
