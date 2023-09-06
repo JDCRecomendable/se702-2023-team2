@@ -19,9 +19,14 @@
       </div>
     </div>
     <div class="chat-container">
-      <div id="messages"></div>
-      <input type="text" id="yourMessage">
-      <button id="sendButton">Send</button>
+      <p class="message-title">Meeting Chat:</p>
+      <div id="messages" class="messages"></div>
+      <div class="message-input-container">
+        <p class="chat-label">To: Everyone</p>
+        <textarea type="text" id="yourMessage" class="your-message" placeholder="Type message here..."></textarea>
+        <button id="sendButton"><img src="images/icons8-send-64.png" height="20"></button>
+      </div>
+      
     </div>
     <h2>Altered Stream - via canvas</h2>
     <div id="zoomControls">
