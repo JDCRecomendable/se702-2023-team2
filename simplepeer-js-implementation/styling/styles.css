@@ -5,7 +5,12 @@ body {
     background-color: #f4f4f4;
 }
 
+.parent-container {
+    display: flex;
+}
+
 .video-container {
+    flex-grow: 1;
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
@@ -58,6 +63,72 @@ button:hover {
     z-index: 1000;
     margin-bottom: 5px;
 }
+
+aside {
+    width: 120px;
+}
+
+aside button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 60px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    top: 25%;
+    width: auto;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent #333 transparent transparent;
+    }
+}
+
+.tooltip-container.active .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+.reset-button {
+    font-size: medium;
+}
+
+/* CSS for the progress bar */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    background-color: green;
+    transition: width 0.3s;
+  }
 
 #canvasContainer{
     z-index: 200;
