@@ -7,15 +7,73 @@
   </head>
 
   <body>
-    <div class="video-container">
-      <div class="video-box">
-        <h2>This is me:</h2>
-        <video id="localVideo" autoplay hidden></video>
-        <div id="canvasContainer"></div>
+    <div class="parent-container">
+      <aside>
+        <div class="tooltip-container">
+          <button class="emoji-button">😀</button>
+          <span class="tooltip-content">
+            <span class="tooltip-text">Clicked: 0</span>
+            <div class="progress-bar">
+              <div class="progress-fill">
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="tooltip-container">
+          <button class="emoji-button">💀</button>
+          <span class="tooltip-content">
+            <span class="tooltip-text">Clicked: 0</span>
+            <div class="progress-bar">
+              <div class="progress-fill">
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="tooltip-container">
+          <button class="emoji-button">❤️</button>
+          <span class="tooltip-content">
+            <span class="tooltip-text">Clicked: 0</span>
+            <div class="progress-bar">
+              <div class="progress-fill">
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="tooltip-container">
+          <button class="emoji-button">👍</button>
+          <span class="tooltip-content">
+            <span class="tooltip-text">Clicked: 0</span>
+            <div class="progress-bar">
+              <div class="progress-fill">
+              </div>
+            </div>
+          </span>
+        </div>
+        <div class="tooltip-container">
+          <button class="emoji-button">👎</button>
+          <span class="tooltip-content">
+            <span class="tooltip-text">Clicked: 0</span>
+            <div class="progress-bar">
+              <div class="progress-fill">
+              </div>
+            </div>
+          </span>
+        </div>
+        <button class="reset-button" id="reset-button">Reset</button>
+      </aside>
+
+      <div class="video-container">
+        <div class="video-box">
+          <h2>This is me:</h2>
+          <video id="localVideo" autoplay></video>
+        </div>
+        <div class="video-box">
+          <h2>This is the other person:</h2>
+          <video id="remoteVideo" autoplay></video>
+        </div>
       </div>
-      <div class="video-box">
-        <h2>This is the other person:</h2>
-        <video id="remoteVideo" autoplay></video>
+      <div class="connection-success">
+        <p>Connection successful!</p>
       </div>
     </div>
     <div class="chat-container">
