@@ -119,9 +119,21 @@ const initializePeer = () => {
 
       // New event handler for receiving data
       peer.on("data", (data) => {
-        const message = data.toString();
-        const messages = document.getElementById("messages");
-        messages.innerHTML += `<p>Other: ${message}</p>`;
+        const receivedData = JSON.parse(data);
+        if (receivedData.type === "message") {
+          const message = data.toString();
+          const messages = document.getElementById("messages");
+          messages.innerHTML += `<p>Other: ${message}</p>`;
+        } else if (receivedData.type === "emoji") {
+          const emoji = receivedData.emoji;
+          // Iterate through emoji buttons to find the matching one
+          const emojiButtons = document.querySelectorAll(".emoji-button");
+          emojiButtons.forEach((emojiButton) => {
+            if (emojiButton.textContent === emoji) {
+              increaseEmojiCount(emojiButton);
+            }
+          });
+        }
       });
     
     })
@@ -174,20 +186,12 @@ tooltipContainers.forEach((container) => {
   let clickCount = 0;
 
   button.addEventListener("click", (event) => {
-    clickCount++;
+    increaseEmojiCount(button);
 
-    // Update progress bar - max width is 10 clicks
-    const maxWidth = 10;
-    const width = Math.min((clickCount / maxWidth) * 100, 100);
-    progressFill.style.width = width + '%';
-
-    // Update tooltip text
-    tooltipText.textContent = `Clicked: ${clickCount}`;
-    button.parentElement.classList.add("active");
-
-    // TODO: Send emoji to peer - currently just logs to console
+    // Send emoji to peer
     const emoji = event.target.textContent;
-    console.log(`clicked ${emoji}`);
+    const data = JSON.stringify({ type: "emoji", emoji });
+    peer.send(data);
   });
 
   // Reset count and progress bar on reset button click
@@ -199,9 +203,34 @@ tooltipContainers.forEach((container) => {
   });
 });
 
+// Function to increase emoji count and update progress bar and tooltip
+const increaseEmojiCount = (emojiButton) => {
+  let clickCount = parseInt(emojiButton.getAttribute("data-click-count")) || 0;
+  clickCount++;
+
+  // Update progress bar - max width is 10 clicks
+  const maxWidth = 10;
+  const width = Math.min((clickCount / maxWidth) * 100, 100);
+
+  // Update tooltip text
+  emojiButton.setAttribute("data-click-count", clickCount);
+  const tooltipText = emojiButton.parentElement.querySelector(".tooltip-text");
+  tooltipText.textContent = `Clicked: ${clickCount}`;
+
+  // Update progress bar width
+  const progressFill =
+    emojiButton.parentElement.querySelector(".progress-fill");
+  progressFill.style.width = `${width}%`;
+
+  // Make emoji button active (visible)
+  emojiButton.parentElement.classList.add("active");
+};
+
+
 // Function to send text message to peer
 const sendMessage = (message) => {
   const messages = document.getElementById("messages");
-  peer.send(message);
+  const data = JSON.stringify({ type: "message", message });
+  peer.send(data);
   messages.innerHTML += `<p>You: ${message}</p>`;
 };
