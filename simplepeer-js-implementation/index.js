@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const initializePeer = () => {
   // Using the modern API and promises
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  navigator.mediaDevices.getUserMedia({ video: true, audio: { echoCancellation: true } })
     .then(stream => {
 
       const audioTracks = stream.getAudioTracks();
@@ -102,6 +102,9 @@ const initializePeer = () => {
       const remoteVideo = document.getElementById("remoteVideo");
 
       localVideo.srcObject = stream;
+
+      // mute playback to remove echo 
+      localVideo.muted = true;
 
       // sourcing the div inside which the canvas is displayed
       const canvasContainer = document.getElementById("canvasContainer");
