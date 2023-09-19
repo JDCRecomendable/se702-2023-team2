@@ -7,6 +7,13 @@
   </head>
 
   <body>
+    <div class="navbar">
+      <span class="logo">EZCALLS</span>
+      <div class="navbar-right">
+        <button class="home-button">Return to Home</button>
+        <button class="settings-button">Settings</button>
+      </div>
+    </div>
     <div class="parent-container">
       <aside>
         <div class="tooltip-container">
@@ -90,7 +97,20 @@
     <div class="connection-success">
       <p>Connection successful!</p>
     </div>
-
+    <div class="modal-overlay" id="settingsModalOverlay">
+      <div class="modal">
+          <h3>Settings</h3>
+          <label for="displayName">Set display name:</label>
+          <div>
+            <input type="text" id="displayName">
+            <button id="changeDisplayName">></button>
+          </div>
+          <div>
+            <label for="remainAnonymous"><input type="checkbox" id="remainAnonymous"> Remain anonymous</label>
+          </div>
+          <button id="closeModal">Close</button>
+      </div>
+    </div>
     <script src="bundle.js"></script>
   </body>
 </html>

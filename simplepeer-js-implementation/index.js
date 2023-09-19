@@ -2,6 +2,14 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
+// nav bar buttons
+const homeButton = document.querySelector('.home-button');
+const settingsButton = document.querySelector('.settings-button');
+
+// modal settings window
+const settingsModalOverlay = document.getElementById('settingsModalOverlay');
+const closeModal = document.getElementById('closeModal');
+
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
@@ -12,6 +20,35 @@ let ctx = canvas.getContext("2d");
 
 // declaring variables for the zoom of stream in x and y direction 
 let zoom = 1.25;
+
+// event listeners for the nav bar buttons
+homeButton.addEventListener('click', function() {
+  //window.location.href = "/";
+  console.log("go to home page");
+});
+
+settingsButton.addEventListener('click', function() {
+  console.log("open up settings modal");
+});
+
+// event listeners for toggling the settings modal window on or off 
+
+// show the modal
+settingsButton.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'block';  
+});
+
+// hide the modal
+closeModal.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'none'; 
+});
+
+// toggle the overlay along with the modal
+settingsModalOverlay.addEventListener('click', function(event) {
+  if (event.target === settingsModalOverlay) {  
+      settingsModalOverlay.style.display = 'none';  
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   ws = new WebSocket("ws://localhost:8080");
