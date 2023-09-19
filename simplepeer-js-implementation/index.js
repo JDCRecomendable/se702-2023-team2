@@ -6,6 +6,10 @@ const MESSAGE_TIMEOUT = 3000;
 const homeButton = document.querySelector('.home-button');
 const settingsButton = document.querySelector('.settings-button');
 
+// modal settings window
+const settingsModalOverlay = document.getElementById('settingsModalOverlay');
+const closeModal = document.getElementById('closeModal');
+
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
@@ -25,6 +29,25 @@ homeButton.addEventListener('click', function() {
 
 settingsButton.addEventListener('click', function() {
   console.log("open up settings modal");
+});
+
+// event listeners for toggling the settings modal window on or off 
+
+// show the modal
+settingsButton.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'block';  
+});
+
+// hide the modal
+closeModal.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'none'; 
+});
+
+// toggle the overlay along with the modal
+settingsModalOverlay.addEventListener('click', function(event) {
+  if (event.target === settingsModalOverlay) {  
+      settingsModalOverlay.style.display = 'none';  
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

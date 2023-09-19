@@ -97,7 +97,17 @@
     <div class="connection-success">
       <p>Connection successful!</p>
     </div>
-
+    <div class="modal-overlay" id="settingsModalOverlay">
+      <div class="modal">
+          <h3>Settings</h3>
+          <label for="displayName">Set display name:</label>
+          <input type="text" id="displayName">
+          <div>
+            <label for="remainAnonymous"><input type="checkbox" id="remainAnonymous"> Remain anonymous</label>
+          </div>
+          <button id="closeModal">Close</button>
+      </div>
+    </div>
     <script src="bundle.js"></script>
   </body>
 </html>
