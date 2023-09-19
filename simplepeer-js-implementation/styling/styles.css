@@ -94,17 +94,67 @@ textarea {
     height: 50px;
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid white;
     border-radius: 3px;
+
 }
+
+.chat-container{
+    width: 20%;
+    background-color: white;
+    position: relative;
+      margin-top:-18px;
+      float:right;
+      right:-18px;
+      top:0px;
+}
+
+.message-title{
+    padding: 8px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.messages{
+    overflow:scroll; 
+    height:70%;
+    padding: 12px;
+    padding-top: 0px;
+}
+.chat-label{
+    margin: 4px;
+}
+
+.message-input-container{
+    border-top: 2px solid black;
+    padding: 8px;
+}
+
+.your-message{
+    font-family: sans-serif;
+    height: 48px;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    user-select: none;
+    resize: none;
+    margin-bottom: 0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+
 
 button {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
+    padding: 4px;
     cursor: pointer;
     border: none;
     border-radius: 3px;
+    float:right;
+    margin: 4px;
 }
 
 button:hover {
