@@ -3,6 +3,45 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    padding-top: 60px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+}
+
+.logo {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+}
+  
+.navbar-right {
+    display: flex;
+    gap: 10px; 
+}
+
+.home-button, .settings-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.home-button:hover, .settings-button:hover {
+    background-color: #0056b3;
 }
 
 .parent-container {

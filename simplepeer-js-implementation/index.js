@@ -2,6 +2,10 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
+// nav bar buttons
+const homeButton = document.querySelector('.home-button');
+const settingsButton = document.querySelector('.settings-button');
+
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
@@ -12,6 +16,16 @@ let ctx = canvas.getContext("2d");
 
 // declaring variables for the zoom of stream in x and y direction 
 let zoom = 1.25;
+
+// event listeners for the nav bar buttons
+homeButton.addEventListener('click', function() {
+  //window.location.href = "/";
+  console.log("go to home page");
+});
+
+settingsButton.addEventListener('click', function() {
+  console.log("open up settings modal");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   ws = new WebSocket("ws://localhost:8080");
