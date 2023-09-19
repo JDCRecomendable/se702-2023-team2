@@ -117,15 +117,16 @@ const initializePeer = () => {
         remoteVideo.srcObject = stream;
       });
 
-      // New event handler for receiving data
+      // receiving text data from peer
+      // could be text messages or emoji
       peer.on("data", (data) => {
         const receivedData = JSON.parse(data);
         if (receivedData.type === "message") {
-          const message = data.toString();
+          const message = receivedData.message;
           const messages = document.getElementById("messages");
           messages.innerHTML += `<p>Other: ${message}</p>`;
         } else if (receivedData.type === "emoji") {
-          const emoji = receivedData.emoji;
+          const emoji = receivedData.message;
           // Iterate through emoji buttons to find the matching one
           const emojiButtons = document.querySelectorAll(".emoji-button");
           emojiButtons.forEach((emojiButton) => {
@@ -189,8 +190,8 @@ tooltipContainers.forEach((container) => {
     increaseEmojiCount(button);
 
     // Send emoji to peer
-    const emoji = event.target.textContent;
-    const data = JSON.stringify({ type: "emoji", emoji });
+    const message = event.target.textContent;
+    const data = JSON.stringify({ type: "emoji", message });
     peer.send(data);
   });
 
