@@ -92,13 +92,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const initializePeer = () => {
   // Using the modern API and promises
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  navigator.mediaDevices.getUserMedia({ video: true, audio: { echoCancellation: true } })
     .then(stream => {
+
+      const audioTracks = stream.getAudioTracks();
+
       // local and remote video div elements
       const localVideo = document.getElementById("localVideo");
       const remoteVideo = document.getElementById("remoteVideo");
 
       localVideo.srcObject = stream;
+
+      // mute playback to remove echo 
+      localVideo.muted = true;
 
       // sourcing the div inside which the canvas is displayed
       const canvasContainer = document.getElementById("canvasContainer");
@@ -128,6 +134,11 @@ const initializePeer = () => {
 
       // framerate of the canvas stream
       const canvasStream = canvas.captureStream(30);
+
+      // Add the audio to the canvas stream
+      if (audioTracks.length > 0) {
+        canvasStream.addTrack(audioTracks[0]);
+      }
 
       // initiate the video streaming, the browser with /#init appended to the url is the initiating browser
       peer = new Peer({
