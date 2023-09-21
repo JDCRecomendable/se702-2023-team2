@@ -244,3 +244,56 @@ aside button {
 #canvasContainer{
     z-index: 200;
 }
+
+/* Style the container */
+
+.home-screen {
+    display: flex;
+    height: 85vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-home-header {
+    text-align: center;
+    display: block;
+}
+
+.sub-home-header {
+    text-align: center;
+    display: block;
+}
+
+.ip-input {
+    background-color: #CDC8C8;
+    outline: none;
+    border-radius: 16px;
+    height: 30px;
+    display: block;
+}
+
+.home-button {
+    background-color: #348B81;
+    color: white;
+    padding: 10px 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 16px;
+    margin: 30px;
+    display: block;
+}
+
+.home-button:hover {
+    background-color: #369D99;
+}
+
+.button-container {
+    text-align: center;
+}
