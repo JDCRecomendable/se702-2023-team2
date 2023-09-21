@@ -283,3 +283,27 @@ const sendMessage = (message) => {
   peer.send(data);
   messages.innerHTML += `<p>You: ${message}</p>`;
 };
+
+const toggleMicButton = document.getElementById('mic-button');
+const toggleCameraButton = document.getElementById('camera-button');
+
+// Function to toggle mic to mute or unmute
+toggleMicButton.addEventListener('click', () => {
+  const stream = peer.streams[0];
+  const audioTracks = stream.getAudioTracks();
+  
+  audioTracks.forEach((track) => {
+    track.enabled = !track.enabled; // Toggle microphone
+  });
+});
+
+// Function to toggle camera on or off
+toggleCameraButton.addEventListener('click', () => {
+  const stream = peer.streams[0];
+  const videoTracks = stream.getVideoTracks();
+  
+  videoTracks.forEach((track) => {
+    track.enabled = !track.enabled; // Toggle camera
+  });
+});
+
