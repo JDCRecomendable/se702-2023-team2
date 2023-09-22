@@ -103,9 +103,6 @@ const initializePeer = () => {
 
       localVideo.srcObject = stream;
 
-      // mute playback to remove echo 
-      localVideo.muted = true;
-
       // sourcing the div inside which the canvas is displayed
       const canvasContainer = document.getElementById("canvasContainer");
 
