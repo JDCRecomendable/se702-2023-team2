@@ -2,6 +2,11 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
+// Home screen components
+const joinButton = document.getElementById('joinButton');
+const startButton = document.getElementById('initButton');
+const serverInput = document.querySelector('.ip-input');
+
 // nav bar buttons
 const homeButton = document.querySelector('.home-button');
 const settingsButton = document.querySelector('.settings-button');
@@ -14,12 +19,29 @@ let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
 
+// declare base URL
+let url = "ws://localhost:8080";
+
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
 
 // declaring variables for the zoom of stream in x and y direction 
 let zoom = 1.25;
+
+// event listeners for home screen buttons
+joinButton.addEventListener('click', function() {
+  const serverURL = serverInput.value.trim();
+  if (serverURL) {
+    url = "ws://" + serverURL + ":8080";
+  }
+  console.log(serverURL);
+  console.log(url);
+})
+
+startButton.addEventListener('click', function() {
+
+})
 
 // event listeners for the nav bar buttons
 homeButton.addEventListener('click', function() {
@@ -51,7 +73,7 @@ settingsModalOverlay.addEventListener('click', function(event) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  ws = new WebSocket("ws://localhost:8080");
+  ws = new WebSocket(url);
 
   // listening for any change in the sliders in ui
   const zoomSlider = document.getElementById("zoomX");
