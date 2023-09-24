@@ -29,88 +29,92 @@ let ctx = canvas.getContext("2d");
 // declaring variables for the zoom of stream in x and y direction 
 let zoom = 1.25;
 
-// event listeners for home screen buttons
-joinButton.addEventListener('click', function() {
-  const serverURL = serverInput.value.trim();
-  if (serverURL) {
-    url = "ws://" + serverURL + ":8080";
-  }
-  console.log(serverURL);
-  console.log(url);
-})
+// Home screen event listeners
+if (window.location.pathname === '/home') {
+  joinButton.addEventListener('click', function() {
+    const serverURL = serverInput.value.trim();
+    if (serverURL) {
+      url = "ws://" + serverURL + ":8080";
+      window.location.href = 'http://localhost:8081/#init';
+    }
+  })
 
-startButton.addEventListener('click', function() {
+  startButton.addEventListener('click', function() {
+    window.location.href = 'http://localhost:8081/#init';
+  })
+}
 
-})
-
-// event listeners for the nav bar buttons
-homeButton.addEventListener('click', function() {
-  //window.location.href = "/";
-  console.log("go to home page");
-});
-
-settingsButton.addEventListener('click', function() {
-  console.log("open up settings modal");
-});
-
-// event listeners for toggling the settings modal window on or off 
-
-// show the modal
-settingsButton.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'block';  
-});
-
-// hide the modal
-closeModal.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'none'; 
-});
-
-// toggle the overlay along with the modal
-settingsModalOverlay.addEventListener('click', function(event) {
-  if (event.target === settingsModalOverlay) {  
-      settingsModalOverlay.style.display = 'none';  
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  ws = new WebSocket(url);
-
-  // listening for any change in the sliders in ui
-  const zoomSlider = document.getElementById("zoomX");
-
-  zoomSlider.addEventListener("input", (event) => {
-    zoom = parseFloat(event.target.value);
+else {
+  // event listeners for the nav bar buttons
+  homeButton.addEventListener('click', function() {
+    //window.location.href = "/";
+    console.log("go to home page");
   });
 
-  ws.onopen = () => {
-    console.log("Connected to the signaling server");
-
-    if (location.hash === "#init") {
-      ws.send(JSON.stringify({ type: 'initiator' }));
-    }
-
-    initializePeer();
-    showConnectionStatus(true);
-  };
-
-  ws.onmessage = (message) => {
-    if (!peer) {
-      messageBuffer.push(message);
-      return;
-    }
-    processMessage(message);
-  };
-
-  // Handle the send button click event
-  const sendButton = document.getElementById("sendButton");
-  const yourMessage = document.getElementById("yourMessage");
-  const messages = document.getElementById("messages");
-
-  sendButton.addEventListener("click", () => {
-    const message = yourMessage.value;
-    sendMessage(message);
+  settingsButton.addEventListener('click', function() {
+    console.log("open up settings modal");
   });
-});
+
+  // event listeners for toggling the settings modal window on or off
+
+  // show the modal
+  settingsButton.addEventListener('click', function() {
+    settingsModalOverlay.style.display = 'block';
+  });
+
+  // hide the modal
+  closeModal.addEventListener('click', function() {
+    settingsModalOverlay.style.display = 'none';
+  });
+
+  // toggle the overlay along with the modal
+  settingsModalOverlay.addEventListener('click', function(event) {
+    if (event.target === settingsModalOverlay) {
+        settingsModalOverlay.style.display = 'none';
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+
+    ws = new WebSocket(url);
+
+    // listening for any change in the sliders in ui
+    const zoomSlider = document.getElementById("zoomX");
+
+    zoomSlider.addEventListener("input", (event) => {
+      zoom = parseFloat(event.target.value);
+    });
+
+    ws.onopen = () => {
+      console.log("Connected to the signaling server");
+
+      if (location.hash === "#init") {
+        ws.send(JSON.stringify({ type: 'initiator' }));
+      }
+
+      initializePeer();
+      showConnectionStatus(true);
+    };
+
+    ws.onmessage = (message) => {
+      if (!peer) {
+        messageBuffer.push(message);
+        return;
+      }
+      processMessage(message);
+    };
+
+    // Handle the send button click event
+    const sendButton = document.getElementById("sendButton");
+    const yourMessage = document.getElementById("yourMessage");
+    const messages = document.getElementById("messages");
+
+    sendButton.addEventListener("click", () => {
+      const message = yourMessage.value;
+      sendMessage(message);
+    });
+  });
+}
 
 const initializePeer = () => {
   // Using the modern API and promises
