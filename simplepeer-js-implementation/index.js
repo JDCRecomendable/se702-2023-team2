@@ -35,7 +35,7 @@ if (window.location.pathname === '/home') {
     const serverURL = serverInput.value.trim();
     if (serverURL) {
       url = "ws://" + serverURL + ":8080";
-      window.location.href = 'http://localhost:8081/#init';
+      window.location.href = 'http://localhost:8081/';
     }
   })
 
@@ -47,8 +47,7 @@ if (window.location.pathname === '/home') {
 else {
   // event listeners for the nav bar buttons
   homeButton.addEventListener('click', function() {
-    //window.location.href = "/";
-    console.log("go to home page");
+    window.location.href = "http://localhost:8081/home";
   });
 
   settingsButton.addEventListener('click', function() {
