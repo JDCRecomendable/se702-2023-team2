@@ -21,8 +21,7 @@
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
-              <div class="progress-fill">
-              </div>
+              <div class="progress-fill"></div>
             </div>
           </span>
         </div>
@@ -31,8 +30,7 @@
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
-              <div class="progress-fill">
-              </div>
+              <div class="progress-fill"></div>
             </div>
           </span>
         </div>
@@ -41,8 +39,7 @@
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
-              <div class="progress-fill">
-              </div>
+              <div class="progress-fill"></div>
             </div>
           </span>
         </div>
@@ -51,8 +48,7 @@
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
-              <div class="progress-fill">
-              </div>
+              <div class="progress-fill"></div>
             </div>
           </span>
         </div>
@@ -61,8 +57,7 @@
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
-              <div class="progress-fill">
-              </div>
+              <div class="progress-fill"></div>
             </div>
           </span>
         </div>
@@ -73,8 +68,18 @@
         <div class="video-box">
           <h2>This is me:</h2>
           <video id="localVideo" autoplay hidden></video>
-        <div id="canvasContainer"></div>
+          <div id="canvasContainer"></div>
+          <button class="control-button camera-button">📷</button>
+          <button class="control-button mic-button">🎙️</button>
         </div>
+        <div class="video-box">
+          <h2>This is me:</h2>
+          <video id="localVideo" autoplay hidden></video>
+          <aside>
+              <!-- ... (emoji buttons and tooltip containers) ... -->
+          </aside>
+          <div id="canvasContainer"></div>
+      </div>
         <div class="video-box">
           <h2>This is the other person:</h2>
           <video id="remoteVideo" autoplay></video>
@@ -88,31 +93,47 @@
         <div id="messages" class="messages"></div>
         <div class="message-input-container">
           <p class="chat-label">To: Everyone</p>
-          <textarea type="text" id="yourMessage" class="your-message" placeholder="Type message here..."></textarea>
-          <button id="sendButton"><img src="images/icons8-send-64.png" height="20"></button>
+          <textarea
+            type="text"
+            id="yourMessage"
+            class="your-message"
+            placeholder="Type message here..."
+          ></textarea>
+          <button id="sendButton">
+            <img src="images/icons8-send-64.png" height="20" />
+          </button>
         </div>
-        
       </div>
     </div>
     <div id="zoomControls">
       <label for="zoomX">Zoom:</label>
-      <input type="range" id="zoomX" min="0.5" max="3" step="0.05" value="1.25">
-    </div>    
+      <input
+        type="range"
+        id="zoomX"
+        min="0.5"
+        max="3"
+        step="0.05"
+        value="1.25"
+      />
+    </div>
     <div class="connection-success">
       <p>Connection successful!</p>
     </div>
     <div class="modal-overlay" id="settingsModalOverlay">
       <div class="modal">
-          <h3>Settings</h3>
-          <label for="displayName">Set display name:</label>
-          <div>
-            <input type="text" id="displayName">
-            <button id="changeDisplayName">></button>
-          </div>
-          <div>
-            <label for="remainAnonymous"><input type="checkbox" id="remainAnonymous"> Remain anonymous</label>
-          </div>
-          <button id="closeModal">Close</button>
+        <h3>Settings</h3>
+        <label for="displayName">Set display name:</label>
+        <div>
+          <input type="text" id="displayName" />
+          <button id="changeDisplayName">></button>
+        </div>
+        <div>
+          <label for="remainAnonymous"
+            ><input type="checkbox" id="remainAnonymous" /> Remain
+            anonymous</label
+          >
+        </div>
+        <button id="closeModal">Close</button>
       </div>
     </div>
     <script src="bundle.js"></script>

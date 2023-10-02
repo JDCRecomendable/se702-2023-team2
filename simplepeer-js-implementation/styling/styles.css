@@ -83,11 +83,14 @@ body {
 }
 
 video {
-    max-width: 100%;
+    max-width: auto;
+    height: 475px;  /* Add a specific height */
+    width: 605px;
     border: 3px solid #ccc;
     border-radius: 5px;
     margin-bottom: 15px;
 }
+
 
 textarea {
     width: 100%;
