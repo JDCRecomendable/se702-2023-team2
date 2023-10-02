@@ -201,13 +201,14 @@ aside button {
     padding: 5px;
     position: absolute;
     top: 25%;
+    left: 100%;   
     width: auto;
 
     &::after {
         content: "";
         position: absolute;
         top: 50%;
-        right: 100%;
+        left: -10px;
         margin-top: -5px;
         border-width: 5px;
         border-style: solid;
