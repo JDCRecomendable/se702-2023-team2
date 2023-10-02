@@ -13,6 +13,7 @@ const closeModal = document.getElementById('closeModal');
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
+let displayName = "Anonymous";
 
 // initialize the canvas
 let canvas = document.createElement("canvas");
@@ -48,6 +49,28 @@ settingsModalOverlay.addEventListener('click', function(event) {
   if (event.target === settingsModalOverlay) {  
       settingsModalOverlay.style.display = 'none';  
   }
+});
+
+// Handles changing display name
+const displayNameInput = document.getElementById("displayName");
+const displayNameButton = document.getElementById("changeDisplayName");
+const remainAnonymousToggle = document.getElementById("remainAnonymous");
+
+displayNameButton.addEventListener("click", () => {
+  // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
+  if (remainAnonymousToggle.checked || displayNameInput.value === "") {
+    displayName = "Anonymous";
+    displayNameInput.value = "";
+    settingsModalOverlay.style.display = "none";
+    return;
+  }
+
+  // Change the display name
+  displayName = displayNameInput.value;
+  displayNameInput.value = "";
+
+  // Close the modal
+  settingsModalOverlay.style.display = "none";
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -169,7 +192,7 @@ const initializePeer = () => {
         if (receivedData.type === "message") {
           const message = receivedData.message;
           const messages = document.getElementById("messages");
-          messages.innerHTML += `<p>Other: ${message}</p>`;
+          messages.innerHTML += `<p>${message}</p>`;
         } else if (receivedData.type === "emoji") {
           const emoji = receivedData.message;
           // Iterate through emoji buttons to find the matching one
@@ -275,8 +298,16 @@ const increaseEmojiCount = (emojiButton) => {
 
 // Function to send text message to peer
 const sendMessage = (message) => {
-  const messages = document.getElementById("messages");
-  const data = JSON.stringify({ type: "message", message });
+  // Clear input field
+  const messageInput = document.getElementById("yourMessage");
+  messageInput.value = "";
+
+  // Send message to peer
+  const fullMessage = `${displayName}: ${message}`;
+  console.log(`Sending message: ${fullMessage}`);
+  const data = JSON.stringify({ type: "message", "message" : fullMessage });
   peer.send(data);
-  messages.innerHTML += `<p>You: ${message}</p>`;
+
+  // Display message on own screen
+  messages.innerHTML += `<p>${displayName}: ${message}</p>`;
 };
