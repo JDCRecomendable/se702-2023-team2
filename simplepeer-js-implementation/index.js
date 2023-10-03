@@ -120,6 +120,10 @@ if (window.location.pathname === "/home") {
   });
 } else {
   statsButton.addEventListener("click", function () {
+    alert(
+      "Interaction records printed to JavaScript console as object. \
+      Copy the object and paste into a text editor for analysis."
+    );
     console.log(interactionRecords);
   });
 
