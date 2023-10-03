@@ -8,6 +8,7 @@ const startButton = document.getElementById('initButton');
 const serverInput = document.querySelector('.ip-input');
 
 // nav bar buttons
+const statsButton = document.querySelector('.stats-button');
 const homeButton = document.querySelector('.home-button');
 const settingsButton = document.querySelector('.settings-button');
 
@@ -22,11 +23,28 @@ let messageBuffer = [];  // Buffer for incoming messages
 // declare base URL
 let url = "ws://localhost:8080";
 
+let displayName = "Anonymous";
+
+let interactionRecords = {
+  smileyEmojiButton: [],
+  skullEmojiButton: [],
+  heartEmojiButton: [],
+  thumbsUpEmojiButton: [],
+  thumbsDownEmojiButton: [],
+  homeButton: [],
+  settingsButton: [],
+  sendButton: [],
+};  // Datetime records of interactions with the GUI
+
+statsButton.addEventListener('click', function() {
+  console.log(interactionRecords);
+});
+
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
 
-// declaring variables for the zoom of stream in x and y direction 
+// declaring variables for the zoom of stream in x and y direction
 let zoom = 1.25;
 
 // Home screen event listeners
@@ -42,19 +60,59 @@ if (window.location.pathname === '/home') {
   startButton.addEventListener('click', function() {
     window.location.href = 'http://localhost:8081/#init';
   })
-}
-
-else {
+} else {
   // event listeners for the nav bar buttons
   homeButton.addEventListener('click', function() {
     window.location.href = "http://localhost:8081/home";
+    console.log("go to home page");
+    interactionRecords.homeButton.push(new Date());
   });
-
+  
   settingsButton.addEventListener('click', function() {
     console.log("open up settings modal");
+    interactionRecords.settingsButton.push(new Date());
   });
 
-  // event listeners for toggling the settings modal window on or off
+// event listeners for toggling the settings modal window on or off
+
+// show the modal
+settingsButton.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'block';
+});
+
+// hide the modal
+closeModal.addEventListener('click', function() {
+  settingsModalOverlay.style.display = 'none';
+});
+
+// toggle the overlay along with the modal
+settingsModalOverlay.addEventListener('click', function(event) {
+  if (event.target === settingsModalOverlay) {
+      settingsModalOverlay.style.display = 'none';
+  }
+});
+
+// Handles changing display name
+const displayNameInput = document.getElementById("displayName");
+const displayNameButton = document.getElementById("changeDisplayName");
+const remainAnonymousToggle = document.getElementById("remainAnonymous");
+
+displayNameButton.addEventListener("click", () => {
+  // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
+  if (remainAnonymousToggle.checked || displayNameInput.value === "") {
+    displayName = "Anonymous";
+    displayNameInput.value = "";
+    settingsModalOverlay.style.display = "none";
+    return;
+  }
+
+  // Change the display name
+  displayName = displayNameInput.value;
+  displayNameInput.value = "";
+
+  // Close the modal
+  settingsModalOverlay.style.display = "none";
+});
 
   // show the modal
   settingsButton.addEventListener('click', function() {
@@ -74,6 +132,14 @@ else {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
+
+  // log interaction with zoom slider
+  zoomSlider.addEventListener("click", (event) => {
+    interactionRecords.zoomSlider.push(new Date());
+  });
+
+  ws.onopen = () => {
+    console.log("Connected to the signaling server");
 
     ws = new WebSocket(url);
 
@@ -108,10 +174,10 @@ else {
     const yourMessage = document.getElementById("yourMessage");
     const messages = document.getElementById("messages");
 
-    sendButton.addEventListener("click", () => {
-      const message = yourMessage.value;
-      sendMessage(message);
-    });
+  sendButton.addEventListener("click", () => {
+    const message = yourMessage.value;
+    sendMessage(message);
+    interactionRecords.sendButton.push(new Date());
   });
 }
 
@@ -144,10 +210,10 @@ const initializePeer = () => {
       // Draw video onto canvas, with zoom based on the slider values for the x and y direction
       const drawVideo = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
         // Use zoomX and zoomY variables
         ctx.setTransform(zoom, 0, 0, zoom, 0, 0);
-      
+
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
         requestAnimationFrame(drawVideo);
       };
@@ -194,7 +260,7 @@ const initializePeer = () => {
         if (receivedData.type === "message") {
           const message = receivedData.message;
           const messages = document.getElementById("messages");
-          messages.innerHTML += `<p>Other: ${message}</p>`;
+          messages.innerHTML += `<p>${message}</p>`;
         } else if (receivedData.type === "emoji") {
           const emoji = receivedData.message;
           // Iterate through emoji buttons to find the matching one
@@ -206,7 +272,7 @@ const initializePeer = () => {
           });
         }
       });
-    
+
     })
     .catch(err => {
       console.error(`Error in getUserMedia: ${err.message}`);
@@ -259,6 +325,12 @@ tooltipContainers.forEach((container) => {
   button.addEventListener("click", (event) => {
     increaseEmojiCount(button);
 
+    // Record interaction with button
+    const buttonName = button.dataset.name || "";
+    if (buttonName !== "" && interactionRecords[buttonName] !== undefined) {
+      interactionRecords[buttonName].push(new Date());
+    }
+
     // Send emoji to peer
     const message = event.target.textContent;
     const data = JSON.stringify({ type: "emoji", message });
@@ -300,8 +372,16 @@ const increaseEmojiCount = (emojiButton) => {
 
 // Function to send text message to peer
 const sendMessage = (message) => {
-  const messages = document.getElementById("messages");
-  const data = JSON.stringify({ type: "message", message });
+  // Clear input field
+  const messageInput = document.getElementById("yourMessage");
+  messageInput.value = "";
+
+  // Send message to peer
+  const fullMessage = `${displayName}: ${message}`;
+  console.log(`Sending message: ${fullMessage}`);
+  const data = JSON.stringify({ type: "message", "message" : fullMessage });
   peer.send(data);
-  messages.innerHTML += `<p>You: ${message}</p>`;
+
+  // Display message on own screen
+  messages.innerHTML += `<p>${displayName}: ${message}</p>`;
 };
