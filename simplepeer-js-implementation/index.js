@@ -52,6 +52,23 @@ let cameraZoom = 1.25;
 let cameraXOffset = 0;
 let cameraYOffset = 0;
 
+// Video screen event listeners
+panLeftButton.addEventListener("click", () => {
+  cameraXOffset += 10;
+});
+
+panRightButton.addEventListener("click", () => {
+  cameraXOffset -= 10;
+});
+
+panUpButton.addEventListener("click", () => {
+  cameraYOffset += 10;
+});
+
+panDownButton.addEventListener("click", () => {
+  cameraYOffset -= 10;
+});
+
 // Home screen event listeners
 if (window.location.pathname === "/home") {
   joinButton.addEventListener("click", function () {
