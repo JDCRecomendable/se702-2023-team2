@@ -41,6 +41,12 @@ let interactionRecords = {
   settingsButton: [],
   sendButton: [],
   zoomSlider: [],
+  panUpButton: [],
+  panDownButton: [],
+  panLeftButton: [],
+  panRightButton: [],
+  micButton: [],
+  cameraButton: [],
 }; // Datetime records of interactions with the GUI
 
 // initialize the canvas
@@ -56,6 +62,7 @@ let cameraYOffset = 0;
 let panTimer;
 
 panLeftButton.addEventListener("mousedown", () => {
+  interactionRecords.panLeftButton.push(new Date());
   panTimer = setInterval(() => {
     cameraXOffset += 4;
   }, 50);
@@ -66,6 +73,7 @@ panLeftButton.addEventListener("mouseup", () => {
 });
 
 panRightButton.addEventListener("mousedown", () => {
+  interactionRecords.panRightButton.push(new Date());
   panTimer = setInterval(() => {
     cameraXOffset -= 4;
   }, 50);
@@ -76,6 +84,7 @@ panRightButton.addEventListener("mouseup", () => {
 });
 
 panUpButton.addEventListener("mousedown", () => {
+  interactionRecords.panUpButton.push(new Date());
   panTimer = setInterval(() => {
     cameraYOffset += 4;
   }, 50);
@@ -86,6 +95,7 @@ panUpButton.addEventListener("mouseup", () => {
 });
 
 panDownButton.addEventListener("mousedown", () => {
+  interactionRecords.panDownButton.push(new Date());
   panTimer = setInterval(() => {
     cameraYOffset -= 4;
   }, 50);
@@ -433,6 +443,7 @@ let toggleAudio = true;
 toggleMicButton.addEventListener("click", () => {
   const stream = peer.streams[0];
   const audioTracks = stream.getAudioTracks();
+  interactionRecords.micButton.push(new Date());
 
   audioTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle microphone
@@ -451,6 +462,7 @@ toggleMicButton.addEventListener("click", () => {
 toggleCameraButton.addEventListener("click", () => {
   const stream = peer.streams[0];
   const videoTracks = stream.getVideoTracks();
+  interactionRecords.cameraButton.push(new Date());
 
   videoTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle camera
