@@ -22,6 +22,13 @@ module.exports = {
   ],
   devServer: {
     static: './',
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/home$/, to: '/home.html' }, // Rewrite /home to /home.html
+        { from: /^\/#init$/, to: '/index.html'},
+        { from: /^\/$/, to: '/index.html'}
+      ]
+    },
   },
   mode: 'development'
 };

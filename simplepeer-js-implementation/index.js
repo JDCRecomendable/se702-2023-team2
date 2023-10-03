@@ -2,6 +2,11 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
+// Home screen components
+const joinButton = document.getElementById('joinButton');
+const startButton = document.getElementById('initButton');
+const serverInput = document.querySelector('.ip-input');
+
 // nav bar buttons
 const statsButton = document.querySelector('.stats-button');
 const homeButton = document.querySelector('.home-button');
@@ -14,6 +19,9 @@ const closeModal = document.getElementById('closeModal');
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
+
+// declare base URL
+let url = "ws://localhost:8080";
 
 let displayName = "Anonymous";
 
@@ -28,10 +36,6 @@ let interactionRecords = {
   sendButton: [],
 };  // Datetime records of interactions with the GUI
 
-statsButton.addEventListener('click', function() {
-  console.log(interactionRecords);
-});
-
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
@@ -39,104 +43,125 @@ let ctx = canvas.getContext("2d");
 // declaring variables for the zoom of stream in x and y direction
 let zoom = 1.25;
 
-// event listeners for the nav bar buttons
-homeButton.addEventListener('click', function() {
-  //window.location.href = "/";
-  console.log("go to home page");
-  interactionRecords.homeButton.push(new Date());
-});
-
-settingsButton.addEventListener('click', function() {
-  console.log("open up settings modal");
-  interactionRecords.settingsButton.push(new Date());
-});
-
-// event listeners for toggling the settings modal window on or off
-
-// show the modal
-settingsButton.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'block';
-});
-
-// hide the modal
-closeModal.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'none';
-});
-
-// toggle the overlay along with the modal
-settingsModalOverlay.addEventListener('click', function(event) {
-  if (event.target === settingsModalOverlay) {
-      settingsModalOverlay.style.display = 'none';
-  }
-});
-
-// Handles changing display name
-const displayNameInput = document.getElementById("displayName");
-const displayNameButton = document.getElementById("changeDisplayName");
-const remainAnonymousToggle = document.getElementById("remainAnonymous");
-
-displayNameButton.addEventListener("click", () => {
-  // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
-  if (remainAnonymousToggle.checked || displayNameInput.value === "") {
-    displayName = "Anonymous";
-    displayNameInput.value = "";
-    settingsModalOverlay.style.display = "none";
-    return;
-  }
-
-  // Change the display name
-  displayName = displayNameInput.value;
-  displayNameInput.value = "";
-
-  // Close the modal
-  settingsModalOverlay.style.display = "none";
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  ws = new WebSocket("ws://localhost:8080");
-
-  // listening for any change in the sliders in ui
-  const zoomSlider = document.getElementById("zoomX");
-
-  zoomSlider.addEventListener("input", (event) => {
-    zoom = parseFloat(event.target.value);
-  });
-
-  // log interaction with zoom slider
-  zoomSlider.addEventListener("click", (event) => {
-    interactionRecords.zoomSlider.push(new Date());
-  });
-
-  ws.onopen = () => {
-    console.log("Connected to the signaling server");
-
-    if (location.hash === "#init") {
-      ws.send(JSON.stringify({ type: 'initiator' }));
+// Home screen event listeners
+if (window.location.pathname === '/home') {
+  joinButton.addEventListener('click', function() {
+    const serverURL = serverInput.value.trim();
+    if (serverURL) {
+      url = "ws://" + serverURL + ":8080";
+      window.location.href = 'http://localhost:8081/';
     }
+  })
 
-    initializePeer();
-    showConnectionStatus(true);
-  };
+  startButton.addEventListener('click', function() {
+    window.location.href = 'http://localhost:8081/#init';
+  })
+} else {
 
-  ws.onmessage = (message) => {
-    if (!peer) {
-      messageBuffer.push(message);
+  statsButton.addEventListener('click', function() {
+    console.log(interactionRecords);
+  });
+  
+  // event listeners for the nav bar buttons
+  homeButton.addEventListener('click', function() {
+    window.location.href = "http://localhost:8081/home";
+    console.log("go to home page");
+    interactionRecords.homeButton.push(new Date());
+  });
+  
+  settingsButton.addEventListener('click', function() {
+    console.log("open up settings modal");
+    interactionRecords.settingsButton.push(new Date());
+  });
+
+  // event listeners for toggling the settings modal window on or off
+
+  // show the modal
+  settingsButton.addEventListener('click', function() {
+    settingsModalOverlay.style.display = 'block';
+  });
+
+  // hide the modal
+  closeModal.addEventListener('click', function() {
+    settingsModalOverlay.style.display = 'none';
+  });
+
+  // toggle the overlay along with the modal
+  settingsModalOverlay.addEventListener('click', function(event) {
+    if (event.target === settingsModalOverlay) {
+        settingsModalOverlay.style.display = 'none';
+    }
+  });
+
+  // Handles changing display name
+  const displayNameInput = document.getElementById("displayName");
+  const displayNameButton = document.getElementById("changeDisplayName");
+  const remainAnonymousToggle = document.getElementById("remainAnonymous");
+
+  displayNameButton.addEventListener("click", () => {
+    // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
+    if (remainAnonymousToggle.checked || displayNameInput.value === "") {
+      displayName = "Anonymous";
+      displayNameInput.value = "";
+      settingsModalOverlay.style.display = "none";
       return;
     }
-    processMessage(message);
-  };
 
-  // Handle the send button click event
-  const sendButton = document.getElementById("sendButton");
-  const yourMessage = document.getElementById("yourMessage");
-  const messages = document.getElementById("messages");
+    // Change the display name
+    displayName = displayNameInput.value;
+    displayNameInput.value = "";
 
-  sendButton.addEventListener("click", () => {
-    const message = yourMessage.value;
-    sendMessage(message);
-    interactionRecords.sendButton.push(new Date());
+    // Close the modal
+    settingsModalOverlay.style.display = "none";
   });
-});
+
+  document.addEventListener("DOMContentLoaded", () => {
+    ws = new WebSocket(url);
+
+    // listening for any change in the sliders in ui
+    const zoomSlider = document.getElementById("zoomX");
+
+    // log interaction with zoom slider
+    zoomSlider.addEventListener("click", (event) => {
+      interactionRecords.zoomSlider.push(new Date());
+    });
+
+    zoomSlider.addEventListener("input", (event) => {
+      zoom = parseFloat(event.target.value);
+    });
+
+    ws.onopen = () => {
+      console.log("Connected to the signaling server");
+
+      if (location.hash === "#init") {
+        ws.send(JSON.stringify({ type: 'initiator' }));
+      }
+
+      initializePeer();
+      showConnectionStatus(true);
+    };
+
+    ws.onmessage = (message) => {
+      if (!peer) {
+        messageBuffer.push(message);
+        return;
+      }
+      processMessage(message);
+    };
+
+    // Handle the send button click event
+    const sendButton = document.getElementById("sendButton");
+    const yourMessage = document.getElementById("yourMessage");
+    const messages = document.getElementById("messages");
+
+    sendButton.addEventListener("click", () => {
+      const message = yourMessage.value;
+      sendMessage(message);
+      interactionRecords.sendButton.push(new Date());
+    });
+    }
+  );
+}
 
 const initializePeer = () => {
   // Using the modern API and promises
@@ -325,7 +350,6 @@ const increaseEmojiCount = (emojiButton) => {
   // Make emoji button active (visible)
   emojiButton.parentElement.classList.add("active");
 };
-
 
 // Function to send text message to peer
 const sendMessage = (message) => {
