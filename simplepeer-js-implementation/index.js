@@ -103,9 +103,6 @@ const initializePeer = () => {
 
       localVideo.srcObject = stream;
 
-      // mute playback to remove echo 
-      localVideo.muted = true;
-
       // sourcing the div inside which the canvas is displayed
       const canvasContainer = document.getElementById("canvasContainer");
 
@@ -283,6 +280,7 @@ const sendMessage = (message) => {
   peer.send(data);
   messages.innerHTML += `<p>You: ${message}</p>`;
 };
+
 
 const toggleMicButton = document.getElementById('mic-button');
 const toggleCameraButton = document.getElementById('camera-button');
