@@ -116,55 +116,52 @@ if (window.location.pathname === '/home') {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
+    ws = new WebSocket(url);
+
+    // listening for any change in the sliders in ui
+    const zoomSlider = document.getElementById("zoomX");
+
     // log interaction with zoom slider
     zoomSlider.addEventListener("click", (event) => {
       interactionRecords.zoomSlider.push(new Date());
     });
 
+    zoomSlider.addEventListener("input", (event) => {
+      zoom = parseFloat(event.target.value);
+    });
+
     ws.onopen = () => {
       console.log("Connected to the signaling server");
 
-      ws = new WebSocket(url);
+      if (location.hash === "#init") {
+        ws.send(JSON.stringify({ type: 'initiator' }));
+      }
 
-      // listening for any change in the sliders in ui
-      const zoomSlider = document.getElementById("zoomX");
+      initializePeer();
+      showConnectionStatus(true);
+    };
 
-      zoomSlider.addEventListener("input", (event) => {
-        zoom = parseFloat(event.target.value);
-      });
+    ws.onmessage = (message) => {
+      if (!peer) {
+        messageBuffer.push(message);
+        return;
+      }
+      processMessage(message);
+    };
 
-      ws.onopen = () => {
-        console.log("Connected to the signaling server");
+    // Handle the send button click event
+    const sendButton = document.getElementById("sendButton");
+    const yourMessage = document.getElementById("yourMessage");
+    const messages = document.getElementById("messages");
 
-        if (location.hash === "#init") {
-          ws.send(JSON.stringify({ type: 'initiator' }));
-        }
-
-        initializePeer();
-        showConnectionStatus(true);
-      };
-
-      ws.onmessage = (message) => {
-        if (!peer) {
-          messageBuffer.push(message);
-          return;
-        }
-        processMessage(message);
-      };
-
-      // Handle the send button click event
-      const sendButton = document.getElementById("sendButton");
-      const yourMessage = document.getElementById("yourMessage");
-      const messages = document.getElementById("messages");
-
-      sendButton.addEventListener("click", () => {
-        const message = yourMessage.value;
-        sendMessage(message);
-        interactionRecords.sendButton.push(new Date());
-      });
+    sendButton.addEventListener("click", () => {
+      const message = yourMessage.value;
+      sendMessage(message);
+      interactionRecords.sendButton.push(new Date());
+    });
     }
-  });
-}  
+  );
+}
 
 const initializePeer = () => {
   // Using the modern API and promises
@@ -353,7 +350,6 @@ const increaseEmojiCount = (emojiButton) => {
   // Make emoji button active (visible)
   emojiButton.parentElement.classList.add("active");
 };
-
 
 // Function to send text message to peer
 const sendMessage = (message) => {
