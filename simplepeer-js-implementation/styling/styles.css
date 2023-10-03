@@ -295,7 +295,7 @@ aside button {
     display: block;
 }
 
-.home-button {
+.home-screen-button {
     background-color: #348B81;
     color: white;
     padding: 10px 50px;
@@ -306,7 +306,7 @@ aside button {
     display: block;
 }
 
-.home-button:hover {
+.home-screen-button:hover {
     background-color: #369D99;
 }
 
