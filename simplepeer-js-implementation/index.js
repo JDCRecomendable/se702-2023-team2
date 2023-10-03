@@ -3,22 +3,22 @@ import Peer from "simple-peer";
 const MESSAGE_TIMEOUT = 3000;
 
 // Home screen components
-const joinButton = document.getElementById('joinButton');
-const startButton = document.getElementById('initButton');
-const serverInput = document.querySelector('.ip-input');
+const joinButton = document.getElementById("joinButton");
+const startButton = document.getElementById("initButton");
+const serverInput = document.querySelector(".ip-input");
 
 // nav bar buttons
-const statsButton = document.querySelector('.stats-button');
-const homeButton = document.querySelector('.home-button');
-const settingsButton = document.querySelector('.settings-button');
+const statsButton = document.querySelector(".stats-button");
+const homeButton = document.querySelector(".home-button");
+const settingsButton = document.querySelector(".settings-button");
 
 // modal settings window
-const settingsModalOverlay = document.getElementById('settingsModalOverlay');
-const closeModal = document.getElementById('closeModal');
+const settingsModalOverlay = document.getElementById("settingsModalOverlay");
+const closeModal = document.getElementById("closeModal");
 
 let ws;
 let peer;
-let messageBuffer = [];  // Buffer for incoming messages
+let messageBuffer = []; // Buffer for incoming messages
 
 // declare base URL
 let url = "ws://localhost:8080";
@@ -35,42 +35,41 @@ let interactionRecords = {
   settingsButton: [],
   sendButton: [],
   zoomSlider: [],
-};  // Datetime records of interactions with the GUI
+}; // Datetime records of interactions with the GUI
 
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
 
 // declaring variables for the zoom of stream in x and y direction
-let zoom = 1.25;
+let cameraZoom = 1.25;
 
 // Home screen event listeners
-if (window.location.pathname === '/home') {
-  joinButton.addEventListener('click', function() {
+if (window.location.pathname === "/home") {
+  joinButton.addEventListener("click", function () {
     const serverURL = serverInput.value.trim();
     if (serverURL) {
       url = "ws://" + serverURL + ":8080";
-      window.location.href = 'http://localhost:8081/';
+      window.location.href = "http://localhost:8081/";
     }
-  })
+  });
 
-  startButton.addEventListener('click', function() {
-    window.location.href = 'http://localhost:8081/#init';
-  })
+  startButton.addEventListener("click", function () {
+    window.location.href = "http://localhost:8081/#init";
+  });
 } else {
-
-  statsButton.addEventListener('click', function() {
+  statsButton.addEventListener("click", function () {
     console.log(interactionRecords);
   });
 
   // event listeners for the nav bar buttons
-  homeButton.addEventListener('click', function() {
+  homeButton.addEventListener("click", function () {
     window.location.href = "http://localhost:8081/home";
     console.log("go to home page");
     interactionRecords.homeButton.push(new Date());
   });
 
-  settingsButton.addEventListener('click', function() {
+  settingsButton.addEventListener("click", function () {
     console.log("open up settings modal");
     interactionRecords.settingsButton.push(new Date());
   });
@@ -78,19 +77,19 @@ if (window.location.pathname === '/home') {
   // event listeners for toggling the settings modal window on or off
 
   // show the modal
-  settingsButton.addEventListener('click', function() {
-    settingsModalOverlay.style.display = 'block';
+  settingsButton.addEventListener("click", function () {
+    settingsModalOverlay.style.display = "block";
   });
 
   // hide the modal
-  closeModal.addEventListener('click', function() {
-    settingsModalOverlay.style.display = 'none';
+  closeModal.addEventListener("click", function () {
+    settingsModalOverlay.style.display = "none";
   });
 
   // toggle the overlay along with the modal
-  settingsModalOverlay.addEventListener('click', function(event) {
+  settingsModalOverlay.addEventListener("click", function (event) {
     if (event.target === settingsModalOverlay) {
-        settingsModalOverlay.style.display = 'none';
+      settingsModalOverlay.style.display = "none";
     }
   });
 
@@ -128,14 +127,14 @@ if (window.location.pathname === '/home') {
     });
 
     zoomSlider.addEventListener("input", (event) => {
-      zoom = parseFloat(event.target.value);
+      cameraZoom = parseFloat(event.target.value);
     });
 
     ws.onopen = () => {
       console.log("Connected to the signaling server");
 
       if (location.hash === "#init") {
-        ws.send(JSON.stringify({ type: 'initiator' }));
+        ws.send(JSON.stringify({ type: "initiator" }));
       }
 
       initializePeer();
@@ -160,15 +159,14 @@ if (window.location.pathname === '/home') {
       sendMessage(message);
       interactionRecords.sendButton.push(new Date());
     });
-    }
-  );
+  });
 }
 
 const initializePeer = () => {
   // Using the modern API and promises
-  navigator.mediaDevices.getUserMedia({ video: true, audio: { echoCancellation: true } })
-    .then(stream => {
-
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: { echoCancellation: true } })
+    .then((stream) => {
       const audioTracks = stream.getAudioTracks();
 
       // local and remote video div elements
@@ -195,7 +193,14 @@ const initializePeer = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Use zoomX and zoomY variables
-        ctx.setTransform(zoom, 0, 0, zoom, canvas.width * (1 - zoom) / 2, canvas.height * (1 - zoom) / 2);
+        ctx.setTransform(
+          cameraZoom,
+          0,
+          0,
+          cameraZoom,
+          (canvas.width * (1 - cameraZoom)) / 2,
+          (canvas.height * (1 - cameraZoom)) / 2
+        );
 
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
         requestAnimationFrame(drawVideo);
@@ -255,9 +260,8 @@ const initializePeer = () => {
           });
         }
       });
-
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(`Error in getUserMedia: ${err.message}`);
     });
 };
@@ -295,13 +299,13 @@ const showConnectionStatus = (successful) => {
 };
 
 // Handles emoji button clicks
-const tooltipContainers = document.querySelectorAll('.tooltip-container');
-const resetButton = document.getElementById('reset-button');
+const tooltipContainers = document.querySelectorAll(".tooltip-container");
+const resetButton = document.getElementById("reset-button");
 
 tooltipContainers.forEach((container) => {
-  const button = container.querySelector('.emoji-button');
-  const tooltipText = container.querySelector('.tooltip-text');
-  const progressFill = container.querySelector('.progress-fill');
+  const button = container.querySelector(".emoji-button");
+  const tooltipText = container.querySelector(".tooltip-text");
+  const progressFill = container.querySelector(".progress-fill");
 
   let clickCount = 0;
 
@@ -324,7 +328,7 @@ tooltipContainers.forEach((container) => {
   resetButton.addEventListener("click", () => {
     clickCount = 0;
     tooltipText.textContent = `Clicked: ${clickCount}`;
-    progressFill.style.width = '0%';
+    progressFill.style.width = "0%";
     button.parentElement.classList.remove("active");
   });
 });
@@ -361,22 +365,21 @@ const sendMessage = (message) => {
   // Send message to peer
   const fullMessage = `${displayName}: ${message}`;
   console.log(`Sending message: ${fullMessage}`);
-  const data = JSON.stringify({ type: "message", "message" : fullMessage });
+  const data = JSON.stringify({ type: "message", message: fullMessage });
   peer.send(data);
 
   // Display message on own screen
   messages.innerHTML += `<p>${displayName}: ${message}</p>`;
 };
 
-
-const toggleMicButton = document.getElementById('mic-button');
-const toggleCameraButton = document.getElementById('camera-button');
+const toggleMicButton = document.getElementById("mic-button");
+const toggleCameraButton = document.getElementById("camera-button");
 
 let toggleVideo = true;
 let toggleAudio = true;
 
 // Function to toggle mic to mute or unmute
-toggleMicButton.addEventListener('click', () => {
+toggleMicButton.addEventListener("click", () => {
   const stream = peer.streams[0];
   const audioTracks = stream.getAudioTracks();
 
@@ -384,9 +387,9 @@ toggleMicButton.addEventListener('click', () => {
     track.enabled = !track.enabled; // Toggle microphone
 
     if (toggleAudio) {
-      toggleMicButton.style.background='#0000FF';
+      toggleMicButton.style.background = "#0000FF";
     } else {
-      toggleMicButton.style.background='#FF0000';
+      toggleMicButton.style.background = "#FF0000";
     }
 
     toggleAudio = !toggleAudio;
@@ -394,7 +397,7 @@ toggleMicButton.addEventListener('click', () => {
 });
 
 // Function to toggle camera on or off
-toggleCameraButton.addEventListener('click', () => {
+toggleCameraButton.addEventListener("click", () => {
   const stream = peer.streams[0];
   const videoTracks = stream.getVideoTracks();
 
@@ -402,9 +405,9 @@ toggleCameraButton.addEventListener('click', () => {
     track.enabled = !track.enabled; // Toggle camera
 
     if (toggleVideo) {
-      toggleCameraButton.style.background='#0000FF';
+      toggleCameraButton.style.background = "#0000FF";
     } else {
-      toggleCameraButton.style.background='#FF0000';
+      toggleCameraButton.style.background = "#FF0000";
     }
 
     toggleAudio = !toggleAudio;
