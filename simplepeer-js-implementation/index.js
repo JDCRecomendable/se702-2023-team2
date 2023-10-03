@@ -36,10 +36,6 @@ let interactionRecords = {
   sendButton: [],
 };  // Datetime records of interactions with the GUI
 
-statsButton.addEventListener('click', function() {
-  console.log(interactionRecords);
-});
-
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
@@ -61,6 +57,11 @@ if (window.location.pathname === '/home') {
     window.location.href = 'http://localhost:8081/#init';
   })
 } else {
+
+  statsButton.addEventListener('click', function() {
+    console.log(interactionRecords);
+  });
+  
   // event listeners for the nav bar buttons
   homeButton.addEventListener('click', function() {
     window.location.href = "http://localhost:8081/home";
@@ -73,46 +74,7 @@ if (window.location.pathname === '/home') {
     interactionRecords.settingsButton.push(new Date());
   });
 
-// event listeners for toggling the settings modal window on or off
-
-// show the modal
-settingsButton.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'block';
-});
-
-// hide the modal
-closeModal.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'none';
-});
-
-// toggle the overlay along with the modal
-settingsModalOverlay.addEventListener('click', function(event) {
-  if (event.target === settingsModalOverlay) {
-      settingsModalOverlay.style.display = 'none';
-  }
-});
-
-// Handles changing display name
-const displayNameInput = document.getElementById("displayName");
-const displayNameButton = document.getElementById("changeDisplayName");
-const remainAnonymousToggle = document.getElementById("remainAnonymous");
-
-displayNameButton.addEventListener("click", () => {
-  // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
-  if (remainAnonymousToggle.checked || displayNameInput.value === "") {
-    displayName = "Anonymous";
-    displayNameInput.value = "";
-    settingsModalOverlay.style.display = "none";
-    return;
-  }
-
-  // Change the display name
-  displayName = displayNameInput.value;
-  displayNameInput.value = "";
-
-  // Close the modal
-  settingsModalOverlay.style.display = "none";
-});
+  // event listeners for toggling the settings modal window on or off
 
   // show the modal
   settingsButton.addEventListener('click', function() {
@@ -131,55 +93,78 @@ displayNameButton.addEventListener("click", () => {
     }
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // Handles changing display name
+  const displayNameInput = document.getElementById("displayName");
+  const displayNameButton = document.getElementById("changeDisplayName");
+  const remainAnonymousToggle = document.getElementById("remainAnonymous");
 
-  // log interaction with zoom slider
-  zoomSlider.addEventListener("click", (event) => {
-    interactionRecords.zoomSlider.push(new Date());
+  displayNameButton.addEventListener("click", () => {
+    // If the user wants to remain anonymous or the display name is empty, set the display name to Anonymous
+    if (remainAnonymousToggle.checked || displayNameInput.value === "") {
+      displayName = "Anonymous";
+      displayNameInput.value = "";
+      settingsModalOverlay.style.display = "none";
+      return;
+    }
+
+    // Change the display name
+    displayName = displayNameInput.value;
+    displayNameInput.value = "";
+
+    // Close the modal
+    settingsModalOverlay.style.display = "none";
   });
 
-  ws.onopen = () => {
-    console.log("Connected to the signaling server");
-
-    ws = new WebSocket(url);
-
-    // listening for any change in the sliders in ui
-    const zoomSlider = document.getElementById("zoomX");
-
-    zoomSlider.addEventListener("input", (event) => {
-      zoom = parseFloat(event.target.value);
+  document.addEventListener("DOMContentLoaded", () => {
+    // log interaction with zoom slider
+    zoomSlider.addEventListener("click", (event) => {
+      interactionRecords.zoomSlider.push(new Date());
     });
 
     ws.onopen = () => {
       console.log("Connected to the signaling server");
 
-      if (location.hash === "#init") {
-        ws.send(JSON.stringify({ type: 'initiator' }));
-      }
+      ws = new WebSocket(url);
 
-      initializePeer();
-      showConnectionStatus(true);
-    };
+      // listening for any change in the sliders in ui
+      const zoomSlider = document.getElementById("zoomX");
 
-    ws.onmessage = (message) => {
-      if (!peer) {
-        messageBuffer.push(message);
-        return;
-      }
-      processMessage(message);
-    };
+      zoomSlider.addEventListener("input", (event) => {
+        zoom = parseFloat(event.target.value);
+      });
 
-    // Handle the send button click event
-    const sendButton = document.getElementById("sendButton");
-    const yourMessage = document.getElementById("yourMessage");
-    const messages = document.getElementById("messages");
+      ws.onopen = () => {
+        console.log("Connected to the signaling server");
 
-  sendButton.addEventListener("click", () => {
-    const message = yourMessage.value;
-    sendMessage(message);
-    interactionRecords.sendButton.push(new Date());
+        if (location.hash === "#init") {
+          ws.send(JSON.stringify({ type: 'initiator' }));
+        }
+
+        initializePeer();
+        showConnectionStatus(true);
+      };
+
+      ws.onmessage = (message) => {
+        if (!peer) {
+          messageBuffer.push(message);
+          return;
+        }
+        processMessage(message);
+      };
+
+      // Handle the send button click event
+      const sendButton = document.getElementById("sendButton");
+      const yourMessage = document.getElementById("yourMessage");
+      const messages = document.getElementById("messages");
+
+      sendButton.addEventListener("click", () => {
+        const message = yourMessage.value;
+        sendMessage(message);
+        interactionRecords.sendButton.push(new Date());
+      });
+    }
   });
-}
+}  
 
 const initializePeer = () => {
   // Using the modern API and promises
