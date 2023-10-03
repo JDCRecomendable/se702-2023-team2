@@ -240,6 +240,14 @@ aside button {
     font-size: medium;
 }
 
+.mic-button {
+    font-size: medium;
+}
+
+.camera-button {
+    font-size: medium;
+}
+
 /* CSS for the progress bar */
 .progress-bar {
     width: 100%;

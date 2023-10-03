@@ -366,3 +366,47 @@ const sendMessage = (message) => {
   // Display message on own screen
   messages.innerHTML += `<p>${displayName}: ${message}</p>`;
 };
+
+
+const toggleMicButton = document.getElementById('mic-button');
+const toggleCameraButton = document.getElementById('camera-button');
+
+let toggleVideo = true;
+let toggleAudio = true;
+
+// Function to toggle mic to mute or unmute
+toggleMicButton.addEventListener('click', () => {
+  const stream = peer.streams[0];
+  const audioTracks = stream.getAudioTracks();
+  
+  audioTracks.forEach((track) => {
+    track.enabled = !track.enabled; // Toggle microphone
+
+    if (toggleAudio){ 
+      toggleMicButton.style.background='#0000FF';
+    } else { 
+      toggleMicButton.style.background='#FF0000';
+    }
+
+    toggleAudio = !toggleAudio;
+  });
+});
+
+// Function to toggle camera on or off
+toggleCameraButton.addEventListener('click', () => {
+  const stream = peer.streams[0];
+  const videoTracks = stream.getVideoTracks();
+  
+  videoTracks.forEach((track) => {
+    track.enabled = !track.enabled; // Toggle camera
+
+    if (toggleVideo){ 
+      toggleCameraButton.style.background='#0000FF';
+    } else { 
+      toggleCameraButton.style.background='#FF0000';
+    }
+
+    toggleAudio = !toggleAudio;
+  });
+});
+
