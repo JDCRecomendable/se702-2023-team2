@@ -3,6 +3,7 @@ import Peer from "simple-peer";
 const MESSAGE_TIMEOUT = 3000;
 
 // nav bar buttons
+const statsButton = document.querySelector('.stats-button');
 const homeButton = document.querySelector('.home-button');
 const settingsButton = document.querySelector('.settings-button');
 
@@ -13,41 +14,59 @@ const closeModal = document.getElementById('closeModal');
 let ws;
 let peer;
 let messageBuffer = [];  // Buffer for incoming messages
+
 let displayName = "Anonymous";
+
+let interactionRecords = {
+  smileyEmojiButton: [],
+  skullEmojiButton: [],
+  heartEmojiButton: [],
+  thumbsUpEmojiButton: [],
+  thumbsDownEmojiButton: [],
+  homeButton: [],
+  settingsButton: [],
+  sendButton: [],
+};  // Datetime records of interactions with the GUI
+
+statsButton.addEventListener('click', function() {
+  console.log(interactionRecords);
+});
 
 // initialize the canvas
 let canvas = document.createElement("canvas");
 let ctx = canvas.getContext("2d");
 
-// declaring variables for the zoom of stream in x and y direction 
+// declaring variables for the zoom of stream in x and y direction
 let zoom = 1.25;
 
 // event listeners for the nav bar buttons
 homeButton.addEventListener('click', function() {
   //window.location.href = "/";
   console.log("go to home page");
+  interactionRecords.homeButton.push(new Date());
 });
 
 settingsButton.addEventListener('click', function() {
   console.log("open up settings modal");
+  interactionRecords.settingsButton.push(new Date());
 });
 
-// event listeners for toggling the settings modal window on or off 
+// event listeners for toggling the settings modal window on or off
 
 // show the modal
 settingsButton.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'block';  
+  settingsModalOverlay.style.display = 'block';
 });
 
 // hide the modal
 closeModal.addEventListener('click', function() {
-  settingsModalOverlay.style.display = 'none'; 
+  settingsModalOverlay.style.display = 'none';
 });
 
 // toggle the overlay along with the modal
 settingsModalOverlay.addEventListener('click', function(event) {
-  if (event.target === settingsModalOverlay) {  
-      settingsModalOverlay.style.display = 'none';  
+  if (event.target === settingsModalOverlay) {
+      settingsModalOverlay.style.display = 'none';
   }
 });
 
@@ -83,6 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
     zoom = parseFloat(event.target.value);
   });
 
+  // log interaction with zoom slider
+  zoomSlider.addEventListener("click", (event) => {
+    interactionRecords.zoomSlider.push(new Date());
+  });
+
   ws.onopen = () => {
     console.log("Connected to the signaling server");
 
@@ -110,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   sendButton.addEventListener("click", () => {
     const message = yourMessage.value;
     sendMessage(message);
+    interactionRecords.sendButton.push(new Date());
   });
 });
 
@@ -142,10 +167,10 @@ const initializePeer = () => {
       // Draw video onto canvas, with zoom based on the slider values for the x and y direction
       const drawVideo = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
         // Use zoomX and zoomY variables
         ctx.setTransform(zoom, 0, 0, zoom, 0, 0);
-      
+
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
         requestAnimationFrame(drawVideo);
       };
@@ -204,7 +229,7 @@ const initializePeer = () => {
           });
         }
       });
-    
+
     })
     .catch(err => {
       console.error(`Error in getUserMedia: ${err.message}`);
@@ -256,6 +281,12 @@ tooltipContainers.forEach((container) => {
 
   button.addEventListener("click", (event) => {
     increaseEmojiCount(button);
+
+    // Record interaction with button
+    const buttonName = button.dataset.name || "";
+    if (buttonName !== "" && interactionRecords[buttonName] !== undefined) {
+      interactionRecords[buttonName].push(new Date());
+    }
 
     // Send emoji to peer
     const message = event.target.textContent;
