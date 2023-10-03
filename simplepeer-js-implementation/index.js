@@ -53,20 +53,46 @@ let cameraXOffset = 0;
 let cameraYOffset = 0;
 
 // Video screen event listeners
-panLeftButton.addEventListener("click", () => {
-  cameraXOffset += 10;
+let panTimer;
+
+panLeftButton.addEventListener("mousedown", () => {
+  panTimer = setInterval(() => {
+    cameraXOffset += 4;
+  }, 50);
 });
 
-panRightButton.addEventListener("click", () => {
-  cameraXOffset -= 10;
+panLeftButton.addEventListener("mouseup", () => {
+  panTimer = clearInterval(panTimer);
 });
 
-panUpButton.addEventListener("click", () => {
-  cameraYOffset += 10;
+panRightButton.addEventListener("mousedown", () => {
+  panTimer = setInterval(() => {
+    cameraXOffset -= 4;
+  }, 50);
 });
 
-panDownButton.addEventListener("click", () => {
-  cameraYOffset -= 10;
+panRightButton.addEventListener("mouseup", () => {
+  panTimer = clearInterval(panTimer);
+});
+
+panUpButton.addEventListener("mousedown", () => {
+  panTimer = setInterval(() => {
+    cameraYOffset += 4;
+  }, 50);
+});
+
+panUpButton.addEventListener("mouseup", () => {
+  panTimer = clearInterval(panTimer);
+});
+
+panDownButton.addEventListener("mousedown", () => {
+  panTimer = setInterval(() => {
+    cameraYOffset -= 4;
+  }, 50);
+});
+
+panDownButton.addEventListener("mouseup", () => {
+  panTimer = clearInterval(panTimer);
 });
 
 // Home screen event listeners
