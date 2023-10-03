@@ -34,6 +34,7 @@ let interactionRecords = {
   homeButton: [],
   settingsButton: [],
   sendButton: [],
+  zoomSlider: [],
 };  // Datetime records of interactions with the GUI
 
 // initialize the canvas
@@ -61,14 +62,14 @@ if (window.location.pathname === '/home') {
   statsButton.addEventListener('click', function() {
     console.log(interactionRecords);
   });
-  
+
   // event listeners for the nav bar buttons
   homeButton.addEventListener('click', function() {
     window.location.href = "http://localhost:8081/home";
     console.log("go to home page");
     interactionRecords.homeButton.push(new Date());
   });
-  
+
   settingsButton.addEventListener('click', function() {
     console.log("open up settings modal");
     interactionRecords.settingsButton.push(new Date());
@@ -194,7 +195,7 @@ const initializePeer = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Use zoomX and zoomY variables
-        ctx.setTransform(zoom, 0, 0, zoom, 0, 0);
+        ctx.setTransform(zoom, 0, 0, zoom, canvas.width * (1 - zoom) / 2, canvas.height * (1 - zoom) / 2);
 
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
         requestAnimationFrame(drawVideo);
@@ -378,13 +379,13 @@ let toggleAudio = true;
 toggleMicButton.addEventListener('click', () => {
   const stream = peer.streams[0];
   const audioTracks = stream.getAudioTracks();
-  
+
   audioTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle microphone
 
-    if (toggleAudio){ 
+    if (toggleAudio) {
       toggleMicButton.style.background='#0000FF';
-    } else { 
+    } else {
       toggleMicButton.style.background='#FF0000';
     }
 
@@ -396,17 +397,16 @@ toggleMicButton.addEventListener('click', () => {
 toggleCameraButton.addEventListener('click', () => {
   const stream = peer.streams[0];
   const videoTracks = stream.getVideoTracks();
-  
+
   videoTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle camera
 
-    if (toggleVideo){ 
+    if (toggleVideo) {
       toggleCameraButton.style.background='#0000FF';
-    } else { 
+    } else {
       toggleCameraButton.style.background='#FF0000';
     }
 
     toggleAudio = !toggleAudio;
   });
 });
-
