@@ -285,6 +285,9 @@ const sendMessage = (message) => {
 const toggleMicButton = document.getElementById('mic-button');
 const toggleCameraButton = document.getElementById('camera-button');
 
+let toggleVideo = true;
+let toggleAudio = true;
+
 // Function to toggle mic to mute or unmute
 toggleMicButton.addEventListener('click', () => {
   const stream = peer.streams[0];
@@ -292,6 +295,14 @@ toggleMicButton.addEventListener('click', () => {
   
   audioTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle microphone
+
+    if (toggleAudio){ 
+      toggleMicButton.style.background='#0000FF';
+    } else { 
+      toggleMicButton.style.background='#FF0000';
+    }
+
+    toggleAudio = !toggleAudio;
   });
 });
 
@@ -302,6 +313,14 @@ toggleCameraButton.addEventListener('click', () => {
   
   videoTracks.forEach((track) => {
     track.enabled = !track.enabled; // Toggle camera
+
+    if (toggleVideo){ 
+      toggleCameraButton.style.background='#0000FF';
+    } else { 
+      toggleCameraButton.style.background='#FF0000';
+    }
+
+    toggleAudio = !toggleAudio;
   });
 });
 
