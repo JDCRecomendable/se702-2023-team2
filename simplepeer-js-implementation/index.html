@@ -10,6 +10,7 @@
     <div class="navbar">
       <span class="logo">EZCALLS</span>
       <div class="navbar-right">
+        <button class="stats-button">Print Stats</button>
         <button class="home-button">Return to Home</button>
         <button class="settings-button">Settings</button>
       </div>
@@ -17,7 +18,7 @@
     <div class="parent-container">
       <aside>
         <div class="tooltip-container">
-          <button class="emoji-button">😀</button>
+          <button class="emoji-button" data-name="smileyEmojiButton">😀</button>
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
@@ -27,7 +28,7 @@
           </span>
         </div>
         <div class="tooltip-container">
-          <button class="emoji-button">💀</button>
+          <button class="emoji-button" data-name="skullEmojiButton">💀</button>
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
@@ -37,7 +38,7 @@
           </span>
         </div>
         <div class="tooltip-container">
-          <button class="emoji-button">❤️</button>
+          <button class="emoji-button" data-name="heartEmojiButton">❤️</button>
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
@@ -47,7 +48,7 @@
           </span>
         </div>
         <div class="tooltip-container">
-          <button class="emoji-button">👍</button>
+          <button class="emoji-button" data-name="thumbsUpEmojiButton">👍</button>
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
@@ -57,7 +58,7 @@
           </span>
         </div>
         <div class="tooltip-container">
-          <button class="emoji-button">👎</button>
+          <button class="emoji-button" data-name="thumbsDownEmojiButton">👎</button>
           <span class="tooltip-content">
             <span class="tooltip-text">Clicked: 0</span>
             <div class="progress-bar">
@@ -91,14 +92,14 @@
           <textarea type="text" id="yourMessage" class="your-message" placeholder="Type message here..."></textarea>
           <button id="sendButton"><img src="images/icons8-send-64.png" height="20"></button>
         </div>
-        
+
       </div>
     </div>
     <h2>Altered Stream - via canvas</h2>
     <div id="zoomControls">
       <label for="zoomX">Zoom:</label>
       <input type="range" id="zoomX" min="0.5" max="3" step="0.05" value="1.25">
-    </div>    
+    </div>
     <div class="connection-success">
       <p>Connection successful!</p>
     </div>
