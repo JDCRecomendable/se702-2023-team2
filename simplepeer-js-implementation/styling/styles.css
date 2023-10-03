@@ -1,356 +1,355 @@
 body {
-    font-family: Helvetica,Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    padding-top: 60px;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  padding-top: 60px;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1001;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
 }
 
 .logo {
-    color: #fff;
-    font-size: 24px;
-    font-weight: bold;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .navbar-right {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
-.home-button, .settings-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.home-button,
+.settings-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1002;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1002;
 }
 
 .modal {
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    width: 300px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.home-button:hover, .settings-button:hover {
-    background-color: #0056b3;
+.home-button:hover,
+.settings-button:hover {
+  background-color: #0056b3;
 }
 
 .parent-container {
-    display: flex;
+  display: flex;
 }
 
 .video-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
 }
 
 .video-box {
-    flex: 1;
-    text-align: center;
+  flex: 1;
+  text-align: center;
 }
 
 video {
-    max-width: auto;
-    height: 475px;
-    width: 605px;
-    border: 3px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 15px;
+  max-width: auto;
+  height: 475px;
+  width: 605px;
+  border: 3px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-
 textarea {
-    width: 100%;
-    height: 50px;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid white;
-    border-radius: 3px;
-
+  width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 3px;
 }
 
 .pan-left-button {
-    height: 120px;
-    opacity: 40%;
-    position: absolute;
-    left: 0;
-    bottom: calc(50% - 60px);
+  height: 120px;
+  opacity: 40%;
+  position: absolute;
+  left: 0;
+  bottom: calc(50% - 60px);
 }
 
 .pan-right-button {
-    height: 120px;
-    opacity: 40%;
-    position: absolute;
-    right: 0;
-    bottom: calc(50% - 60px);
+  height: 120px;
+  opacity: 40%;
+  position: absolute;
+  right: 0;
+  bottom: calc(50% - 60px);
 }
 
 .pan-up-button {
-    width: 120px;
-    opacity: 40%;
-    position: absolute;
-    top: 0;
-    left: calc(50% - 60px);
+  width: 120px;
+  opacity: 40%;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 60px);
 }
 
 .pan-down-button {
-    width: 120px;
-    opacity: 40%;
-    position: absolute;
-    bottom: 0;
-    left: calc(50% - 60px);
+  width: 120px;
+  opacity: 40%;
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 60px);
 }
 
 .chat-container {
-    width: 22%;
-    background-color: #f9f9f9;
-    position: relative;
-    margin-top: -18px;
-    float: right;
-    right: -18px;
-    top: 0px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    transition: all 0.3s;
+  width: 22%;
+  background-color: #f9f9f9;
+  position: relative;
+  margin-top: -18px;
+  float: right;
+  right: -18px;
+  top: 0px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s;
 }
 
 .message-title {
-    padding: 12px 16px;
-    text-align: center;
-    margin-bottom: 0px;
-    font-weight: bold;
-    border-bottom: 1px solid #e1e1e1;
-    background-color: #f3f3f3;
+  padding: 12px 16px;
+  text-align: center;
+  margin-bottom: 0px;
+  font-weight: bold;
+  border-bottom: 1px solid #e1e1e1;
+  background-color: #f3f3f3;
 }
 
 .messages {
-    overflow-y: scroll;
-    height: 70%;
-    padding: 12px;
-    padding-top: 0px;
+  overflow-y: scroll;
+  height: 70%;
+  padding: 12px;
+  padding-top: 0px;
 }
 
 .chat-label {
-    margin: 8px 12px;
-    font-weight: 600;
+  margin: 8px 12px;
+  font-weight: 600;
 }
 
 .message-input-container {
-    border-top: 1px solid #e1e1e1;
-    padding: 8px 12px;
+  border-top: 1px solid #e1e1e1;
+  padding: 8px 12px;
 }
 
 .your-message {
-    font-family: sans-serif;
-    height: 48px;
-    width: 100%;
-    background-color: transparent;
-    border: 1px solid #d1d1d1;
-    user-select: none;
-    resize: none;
-    margin-bottom: 0px;
-    padding: 8px;
-    transition: border-color 0.3s;
+  font-family: sans-serif;
+  height: 48px;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #d1d1d1;
+  user-select: none;
+  resize: none;
+  margin-bottom: 0px;
+  padding: 8px;
+  transition: border-color 0.3s;
 }
 
 .your-message:focus {
-    border-color: #007bff;
-    outline: none;
+  border-color: #007bff;
+  outline: none;
 }
 
 button {
-    background-color: #007bff;
-    color: white;
-    padding: 6px 12px;
-    cursor: pointer;
-    border: none;
-    border-radius: 3px;
-    float: right;
-    margin: 4px;
-    transition: background-color 0.3s;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  float: right;
+  margin: 4px;
+  transition: background-color 0.3s;
 }
 
-
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .connection-success {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px;
-    border-radius: 5px;
-    background-color: green;
-    color: white;
-    z-index: 1000;
-    margin-bottom: 5px;
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  z-index: 1000;
+  margin-bottom: 5px;
 }
 
 aside {
-    width: 120px;
+  width: 120px;
 }
 
 aside button {
-    padding: 10px;
-    margin: 10px;
-    font-size: 60px;
-    cursor: pointer;
-    border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  font-size: 60px;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
 .tooltip-container {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .tooltip-content {
-    visibility: hidden;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px;
-    position: absolute;
-    top: 25%;
-    left: 100%;
-    width: auto;
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  top: 25%;
+  left: 100%;
+  width: auto;
 
-    &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: -10px;
-        margin-top: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent #333 transparent transparent;
-    }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #333 transparent transparent;
+  }
 }
 
 .tooltip-container.active .tooltip-content {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .reset-button {
-    font-size: medium;
+  font-size: medium;
 }
 
 .mic-button {
-    font-size: medium;
+  font-size: medium;
 }
 
 .camera-button {
-    font-size: medium;
+  font-size: medium;
 }
 
 /* CSS for the progress bar */
 .progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: #ccc;
-    border-radius: 5px;
-    margin-top: 5px;
-    overflow: hidden;
-  }
+  width: 100%;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+}
 
-  .progress-fill {
-    height: 100%;
-    width: 0;
-    background-color: green;
-    transition: width 0.3s;
-  }
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background-color: green;
+  transition: width 0.3s;
+}
 
-#canvasContainer{
-    z-index: 200;
-    position: relative;
+#canvasContainer {
+  z-index: 200;
+  position: relative;
 }
 
 /* Style the container */
 
 .home-screen {
-    display: flex;
-    height: 85vh;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  height: 85vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-home-header {
-    text-align: center;
-    display: block;
+  text-align: center;
+  display: block;
 }
 
 .sub-home-header {
-    text-align: center;
-    display: block;
+  text-align: center;
+  display: block;
 }
 
 .ip-input {
-    background-color: #CDC8C8;
-    outline: none;
-    border-radius: 16px;
-    height: 30px;
-    display: block;
+  background-color: #cdc8c8;
+  outline: none;
+  border-radius: 16px;
+  height: 30px;
+  display: block;
 }
 
 .home-screen-button {
-    background-color: #348B81;
-    color: white;
-    padding: 10px 50px;
-    cursor: pointer;
-    border: none;
-    border-radius: 16px;
-    margin: 30px;
-    display: block;
+  background-color: #348b81;
+  color: white;
+  padding: 10px 50px;
+  cursor: pointer;
+  border: none;
+  border-radius: 16px;
+  margin: 30px;
+  display: block;
 }
 
 .home-screen-button:hover {
-    background-color: #369D99;
+  background-color: #369d99;
 }
 
 .button-container {
-    text-align: center;
+  text-align: center;
 }
