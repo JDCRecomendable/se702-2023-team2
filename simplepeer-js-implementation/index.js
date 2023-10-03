@@ -43,6 +43,8 @@ let ctx = canvas.getContext("2d");
 
 // declaring variables for the zoom of stream in x and y direction
 let cameraZoom = 1.25;
+let cameraXOffset = 0;
+let cameraYOffset = 0;
 
 // Home screen event listeners
 if (window.location.pathname === "/home") {
@@ -198,8 +200,8 @@ const initializePeer = () => {
           0,
           0,
           cameraZoom,
-          (canvas.width * (1 - cameraZoom)) / 2,
-          (canvas.height * (1 - cameraZoom)) / 2
+          (canvas.width * (1 - cameraZoom)) / 2 + cameraXOffset,
+          (canvas.height * (1 - cameraZoom)) / 2 + cameraYOffset
         );
 
         ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);

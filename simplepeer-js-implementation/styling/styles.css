@@ -24,10 +24,10 @@ body {
     font-size: 24px;
     font-weight: bold;
 }
-  
+
 .navbar-right {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
 }
 
 .home-button, .settings-button {
@@ -41,21 +41,21 @@ body {
 }
 
 .modal-overlay {
-    display: none;  
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); 
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 1002;
 }
 
 .modal {
     position: absolute;
-    top: 60px; 
-    right: 20px; 
-    width: 300px; 
+    top: 60px;
+    right: 20px;
+    width: 300px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -102,6 +102,38 @@ textarea {
 
 }
 
+.pan-left-button {
+    height: 120px;
+    opacity: 40%;
+    position: absolute;
+    left: 0;
+    bottom: calc(50% - 60px);
+}
+
+.pan-right-button {
+    height: 120px;
+    opacity: 40%;
+    position: absolute;
+    right: 0;
+    bottom: calc(50% - 60px);
+}
+
+.pan-up-button {
+    width: 120px;
+    opacity: 40%;
+    position: absolute;
+    top: 0;
+    left: calc(50% - 60px);
+}
+
+.pan-down-button {
+    width: 120px;
+    opacity: 40%;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 60px);
+}
+
 .chat-container {
     width: 22%;
     background-color: #f9f9f9;
@@ -137,7 +169,7 @@ textarea {
 }
 
 .message-input-container {
-    border-top: 1px solid #e1e1e1; 
+    border-top: 1px solid #e1e1e1;
     padding: 8px 12px;
 }
 
@@ -216,7 +248,7 @@ aside button {
     padding: 5px;
     position: absolute;
     top: 25%;
-    left: 100%;   
+    left: 100%;
     width: auto;
 
     &::after {
@@ -267,6 +299,7 @@ aside button {
 
 #canvasContainer{
     z-index: 200;
+    position: relative;
 }
 
 /* Style the container */
