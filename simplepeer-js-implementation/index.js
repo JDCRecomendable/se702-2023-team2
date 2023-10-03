@@ -2,6 +2,12 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
+// Video stream elements
+const panLeftButton = document.getElementById("pan-left-button");
+const panRightButton = document.getElementById("pan-right-button");
+const panUpButton = document.getElementById("pan-up-button");
+const panDownButton = document.getElementById("pan-down-button");
+
 // Home screen components
 const joinButton = document.getElementById("joinButton");
 const startButton = document.getElementById("initButton");

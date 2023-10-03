@@ -102,36 +102,35 @@ textarea {
   border-radius: 3px;
 }
 
-.pan-left-button {
-  height: 120px;
+.pan-button {
   opacity: 40%;
   position: absolute;
+}
+
+.pan-horizontal-button {
+  height: 120px;
+  bottom: calc(50% - 60px);
+}
+
+.pan-vertical-button {
+  width: 120px;
+  left: calc(50% - 60px);
+}
+
+#pan-left-button {
   left: 0;
-  bottom: calc(50% - 60px);
 }
 
-.pan-right-button {
-  height: 120px;
-  opacity: 40%;
-  position: absolute;
+#pan-right-button {
   right: 0;
-  bottom: calc(50% - 60px);
 }
 
-.pan-up-button {
-  width: 120px;
-  opacity: 40%;
-  position: absolute;
+#pan-up-button {
   top: 0;
-  left: calc(50% - 60px);
 }
 
-.pan-down-button {
-  width: 120px;
-  opacity: 40%;
-  position: absolute;
+#pan-down-button {
   bottom: 0;
-  left: calc(50% - 60px);
 }
 
 .chat-container {
