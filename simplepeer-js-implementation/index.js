@@ -89,9 +89,9 @@ if (window.location.pathname === "/home") {
       track.enabled = !track.enabled; // Toggle microphone
 
       if (toggleAudio) {
-        toggleMicButton.style.background = "#0000FF";
-      } else {
         toggleMicButton.style.background = "#FF0000";
+      } else {
+        toggleMicButton.style.background = "#879ceb";
       }
 
       toggleAudio = !toggleAudio;
@@ -107,12 +107,12 @@ if (window.location.pathname === "/home") {
       track.enabled = !track.enabled; // Toggle camera
 
       if (toggleVideo) {
-        toggleCameraButton.style.background = "#0000FF";
-      } else {
         toggleCameraButton.style.background = "#FF0000";
+      } else {
+        toggleCameraButton.style.background = "#879ceb";  
       }
 
-      toggleAudio = !toggleAudio;
+      toggleVideo = !toggleVideo; // Corrected this line
     });
   });
 
