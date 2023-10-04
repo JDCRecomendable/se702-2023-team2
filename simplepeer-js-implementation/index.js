@@ -2,7 +2,11 @@ import Peer from "simple-peer";
 
 const MESSAGE_TIMEOUT = 3000;
 
-// Video stream elements
+// Mic and camera toggle buttons
+const toggleMicButton = document.getElementById("mic-button");
+const toggleCameraButton = document.getElementById("camera-button");
+
+// Video stream buttons
 const panLeftButton = document.getElementById("pan-left-button");
 const panRightButton = document.getElementById("pan-right-button");
 const panUpButton = document.getElementById("pan-up-button");
@@ -58,53 +62,6 @@ let cameraZoom = 1.25;
 let cameraXOffset = 0;
 let cameraYOffset = 0;
 
-// Video screen event listeners
-let panTimer;
-
-panLeftButton.addEventListener("mousedown", () => {
-  interactionRecords.panLeftButton.push(new Date());
-  panTimer = setInterval(() => {
-    cameraXOffset += 4;
-  }, 50);
-});
-
-panLeftButton.addEventListener("mouseup", () => {
-  panTimer = clearInterval(panTimer);
-});
-
-panRightButton.addEventListener("mousedown", () => {
-  interactionRecords.panRightButton.push(new Date());
-  panTimer = setInterval(() => {
-    cameraXOffset -= 4;
-  }, 50);
-});
-
-panRightButton.addEventListener("mouseup", () => {
-  panTimer = clearInterval(panTimer);
-});
-
-panUpButton.addEventListener("mousedown", () => {
-  interactionRecords.panUpButton.push(new Date());
-  panTimer = setInterval(() => {
-    cameraYOffset += 4;
-  }, 50);
-});
-
-panUpButton.addEventListener("mouseup", () => {
-  panTimer = clearInterval(panTimer);
-});
-
-panDownButton.addEventListener("mousedown", () => {
-  interactionRecords.panDownButton.push(new Date());
-  panTimer = setInterval(() => {
-    cameraYOffset -= 4;
-  }, 50);
-});
-
-panDownButton.addEventListener("mouseup", () => {
-  panTimer = clearInterval(panTimer);
-});
-
 // Home screen event listeners
 if (window.location.pathname === "/home") {
   joinButton.addEventListener("click", function () {
@@ -119,6 +76,94 @@ if (window.location.pathname === "/home") {
     window.location.href = "http://localhost:8081/#init";
   });
 } else {
+  let toggleVideo = true;
+  let toggleAudio = true;
+
+  // event listeners for toggling the mic and camera buttons
+  toggleMicButton.addEventListener("click", () => {
+    const stream = peer.streams[0];
+    const audioTracks = stream.getAudioTracks();
+    interactionRecords.micButton.push(new Date());
+
+    audioTracks.forEach((track) => {
+      track.enabled = !track.enabled; // Toggle microphone
+
+      if (toggleAudio) {
+        toggleMicButton.style.background = "#FF0000";
+      } else {
+        toggleMicButton.style.background = "#879ceb";
+      }
+
+      toggleAudio = !toggleAudio;
+    });
+  });
+
+  toggleCameraButton.addEventListener("click", () => {
+    const stream = peer.streams[0];
+    const videoTracks = stream.getVideoTracks();
+    interactionRecords.cameraButton.push(new Date());
+
+    videoTracks.forEach((track) => {
+      track.enabled = !track.enabled; // Toggle camera
+
+      if (toggleVideo) {
+        toggleCameraButton.style.background = "#FF0000";
+      } else {
+        toggleCameraButton.style.background = "#879ceb";  
+      }
+
+      toggleVideo = !toggleVideo; // Corrected this line
+    });
+  });
+
+  // event listeners for panning the video stream
+  let panTimer;
+
+  panLeftButton.addEventListener("mousedown", () => {
+    interactionRecords.panLeftButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraXOffset += 4;
+    }, 50);
+  });
+
+  panLeftButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panRightButton.addEventListener("mousedown", () => {
+    interactionRecords.panRightButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraXOffset -= 4;
+    }, 50);
+  });
+
+  panRightButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panUpButton.addEventListener("mousedown", () => {
+    interactionRecords.panUpButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraYOffset += 4;
+    }, 50);
+  });
+
+  panUpButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panDownButton.addEventListener("mousedown", () => {
+    interactionRecords.panDownButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraYOffset -= 4;
+    }, 50);
+  });
+
+  panDownButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  // event listeners for the nav bar buttons
   statsButton.addEventListener("click", function () {
     alert(
       "Interaction records printed to JavaScript console as object. \
@@ -127,7 +172,6 @@ if (window.location.pathname === "/home") {
     console.log(interactionRecords);
   });
 
-  // event listeners for the nav bar buttons
   homeButton.addEventListener("click", function () {
     window.location.href = "http://localhost:8081/home";
     console.log("go to home page");
@@ -436,47 +480,3 @@ const sendMessage = (message) => {
   // Display message on own screen
   messages.innerHTML += `<p>${displayName}: ${message}</p>`;
 };
-
-const toggleMicButton = document.getElementById("mic-button");
-const toggleCameraButton = document.getElementById("camera-button");
-
-let toggleVideo = true;
-let toggleAudio = true;
-
-// Function to toggle mic to mute or unmute
-toggleMicButton.addEventListener("click", () => {
-  const stream = peer.streams[0];
-  const audioTracks = stream.getAudioTracks();
-  interactionRecords.micButton.push(new Date());
-
-  audioTracks.forEach((track) => {
-    track.enabled = !track.enabled; // Toggle microphone
-
-    if (toggleAudio) {
-      toggleMicButton.style.background = "#0000FF";
-    } else {
-      toggleMicButton.style.background = "#FF0000";
-    }
-
-    toggleAudio = !toggleAudio;
-  });
-});
-
-// Function to toggle camera on or off
-toggleCameraButton.addEventListener("click", () => {
-  const stream = peer.streams[0];
-  const videoTracks = stream.getVideoTracks();
-  interactionRecords.cameraButton.push(new Date());
-
-  videoTracks.forEach((track) => {
-    track.enabled = !track.enabled; // Toggle camera
-
-    if (toggleVideo) {
-      toggleCameraButton.style.background = "#0000FF";
-    } else {
-      toggleCameraButton.style.background = "#FF0000";
-    }
-
-    toggleAudio = !toggleAudio;
-  });
-});
