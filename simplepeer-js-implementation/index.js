@@ -30,9 +30,6 @@ let ws;
 let peer;
 let messageBuffer = []; // Buffer for incoming messages
 
-// declare base URL
-let url = "ws://localhost:8080";
-
 let displayName = "Anonymous";
 
 let interactionRecords = {
@@ -67,13 +64,12 @@ if (window.location.pathname === "/home") {
   joinButton.addEventListener("click", function () {
     const serverURL = serverInput.value.trim();
     if (serverURL) {
-      url = "ws://" + serverURL + ":8080";
-      window.location.href = "http://localhost:8081/";
+      window.location.href = `/${serverURL}`;
     }
   });
 
   startButton.addEventListener("click", function () {
-    window.location.href = "http://localhost:8081/#init";
+    window.location.href = "/#init";
   });
 } else {
   let toggleVideo = true;
@@ -173,7 +169,7 @@ if (window.location.pathname === "/home") {
   });
 
   homeButton.addEventListener("click", function () {
-    window.location.href = "http://localhost:8081/home";
+    window.location.href = "/home";
     console.log("go to home page");
     interactionRecords.homeButton.push(new Date());
   });
@@ -225,7 +221,13 @@ if (window.location.pathname === "/home") {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    ws = new WebSocket(url);
+    let url;
+    if (location.hash === '#init') {
+      url = "/localhost"
+    } else {
+      url = window.location.pathname;
+    }
+    ws = new WebSocket(`ws:/${url}:8080`);
 
     // listening for any change in the sliders in ui
     const zoomSlider = document.getElementById("zoomX");
