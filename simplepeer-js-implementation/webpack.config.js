@@ -26,7 +26,7 @@ module.exports = {
       rewrites: [
         { from: /^\/home$/, to: '/home.html' }, // Rewrite /home to /home.html
         { from: /^\/#init$/, to: '/index.html'},
-        { from: /^\/(\w+)$/, to: '/index.html'}
+        { from: /^\/(\d+.\d+.\d+.\d+)$/, to: '/index.html'}
       ]
     },
   },
