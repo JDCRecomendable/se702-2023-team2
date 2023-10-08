@@ -15,6 +15,13 @@ Sessionx.vim
 ## Temporary
 .netrwhist
 *~
+*.local
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
 ## Auto-generated tag files
 tags
 
@@ -154,6 +161,7 @@ build/Release
 ## Dependency directories
 node_modules/
 jspm_packages/
+dist-ssr
 
 ## Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

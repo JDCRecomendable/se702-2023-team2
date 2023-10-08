@@ -1,29 +1,23 @@
-# NAME OF THE SYSTEM
+# Project
+Implementation of a webrtc video conferencing application using SimplePeer framework. The project uses npm and vanillaJS.
 
-This system represents the attempt of Team 2 of SOFTENG 702 2023 to build a more open teleconferencing client that is flexible and configurable by users.  It empowers end-users to own their clients, giving them confidence in teleconferencing sessions.  Overall, this research project aims to enhance the teleconferencing experience for everyone.
+## Version 1
+There is no signal server, so the connection between the initiator and the other peer is made by manually copying the id to and from. 
+When a signal server has been created, this will be routed through the signal server and can be done automatically.
 
+## Version 2
+There is a simple signal server implementation, first run the signal server:
+```npm run signal``` 
+then run the application:
+```npm run start```
+Now there is no longer a need to manually connect the two peers, the signal server takes care of it.
 
-## Structure
+### To run:
+1. Start the signal server with ```npm run signal```.
+2. Start the application with ```npm run start```.
+3. Open two browsers: localhost:8081/#init in one browser and localhost:8081 in the second browser. *
+4. The browser with /#init appended to url is your client, the other one simulates the other peer.
 
-This repository is a monorepo.  It consists of the `frontend` and `backend` packages, located inside the `packages/` directory.  Users of text editors and IDEs such as Visual Studio Code and WebStorm are encouraged to open each package as a self-contained project in their text editor or IDE of choice.  Each package has its own set of linter configuration, etc., that aim to enhance the developer experience.
-
-
-## Technologies
-
-### Frontend
-
-The `frontend` package uses the following technologies:
-
-* React
-* Tailwind CSS
-
-### Backend
-
-The `backend` package uses the following technologies:
-
-* Node.js
-* MongoDB
-* Express
-* JSON Web Tokens (JWTs)
-
-After cloning the repository, the `backend` package will not work straight away.  To get the `backend` package to work, copy `.env.DEFAULT` into `.env`.  Optionally change the `JWT_SIGNING_SECRET` variable in `.env` to a stronger value.
+### Note: 
+* The signal server will run at port 8080, that means when you go ```npm run start```. Therefore, the application will likely run at next available which is 8081. 
+But that might not be the case, so check the console.log statements for what port it opens at.

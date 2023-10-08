@@ -1,5 +1,0 @@
-{
-  "printWidth": 100,
-  "quoteProps": "consistent",
-  "plugins": ["prettier-plugin-organize-imports"]
-}
