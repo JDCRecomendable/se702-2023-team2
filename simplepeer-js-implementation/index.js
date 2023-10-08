@@ -112,7 +112,52 @@ if (window.location.pathname === "/home") {
     });
   });
 
- 
+ // event listeners for panning the video stream
+  let panTimer;
+
+  panLeftButton.addEventListener("mousedown", () => {
+    interactionRecords.panLeftButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraXOffset += 4;
+    }, 50);
+  });
+
+  panLeftButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panRightButton.addEventListener("mousedown", () => {
+    interactionRecords.panRightButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraXOffset -= 4;
+    }, 50);
+  });
+
+  panRightButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panUpButton.addEventListener("mousedown", () => {
+    interactionRecords.panUpButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraYOffset += 4;
+    }, 50);
+  });
+
+  panUpButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
+
+  panDownButton.addEventListener("mousedown", () => {
+    interactionRecords.panDownButton.push(new Date());
+    panTimer = setInterval(() => {
+      cameraYOffset -= 4;
+    }, 50);
+  });
+
+  panDownButton.addEventListener("mouseup", () => {
+    panTimer = clearInterval(panTimer);
+  });
 
   // event listeners for the nav bar buttons
   statsButton.addEventListener("click", function () {
