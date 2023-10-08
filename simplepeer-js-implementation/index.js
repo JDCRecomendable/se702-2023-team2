@@ -30,9 +30,6 @@ let ws;
 let peer;
 let messageBuffer = []; // Buffer for incoming messages
 
-// declare base URL
-let url = "ws://localhost:8080";
-
 let displayName = "Anonymous";
 
 let interactionRecords = {
@@ -67,13 +64,12 @@ if (window.location.pathname === "/home") {
   joinButton.addEventListener("click", function () {
     const serverURL = serverInput.value.trim();
     if (serverURL) {
-      url = "ws://" + serverURL + ":8080";
-      window.location.href = "http://localhost:8081/";
+      window.location.href = `/${serverURL}`;
     }
   });
 
   startButton.addEventListener("click", function () {
-    window.location.href = "http://localhost:8081/#init";
+    window.location.href = "/#init";
   });
 } else {
   let toggleVideo = true;
@@ -116,52 +112,7 @@ if (window.location.pathname === "/home") {
     });
   });
 
-  // event listeners for panning the video stream
-  let panTimer;
-
-  panLeftButton.addEventListener("mousedown", () => {
-    interactionRecords.panLeftButton.push(new Date());
-    panTimer = setInterval(() => {
-      cameraXOffset += 4;
-    }, 50);
-  });
-
-  panLeftButton.addEventListener("mouseup", () => {
-    panTimer = clearInterval(panTimer);
-  });
-
-  panRightButton.addEventListener("mousedown", () => {
-    interactionRecords.panRightButton.push(new Date());
-    panTimer = setInterval(() => {
-      cameraXOffset -= 4;
-    }, 50);
-  });
-
-  panRightButton.addEventListener("mouseup", () => {
-    panTimer = clearInterval(panTimer);
-  });
-
-  panUpButton.addEventListener("mousedown", () => {
-    interactionRecords.panUpButton.push(new Date());
-    panTimer = setInterval(() => {
-      cameraYOffset += 4;
-    }, 50);
-  });
-
-  panUpButton.addEventListener("mouseup", () => {
-    panTimer = clearInterval(panTimer);
-  });
-
-  panDownButton.addEventListener("mousedown", () => {
-    interactionRecords.panDownButton.push(new Date());
-    panTimer = setInterval(() => {
-      cameraYOffset -= 4;
-    }, 50);
-  });
-
-  panDownButton.addEventListener("mouseup", () => {
-    panTimer = clearInterval(panTimer);
-  });
+ 
 
   // event listeners for the nav bar buttons
   statsButton.addEventListener("click", function () {
@@ -173,7 +124,7 @@ if (window.location.pathname === "/home") {
   });
 
   homeButton.addEventListener("click", function () {
-    window.location.href = "http://localhost:8081/home";
+    window.location.href = "/home";
     console.log("go to home page");
     interactionRecords.homeButton.push(new Date());
   });
@@ -225,7 +176,13 @@ if (window.location.pathname === "/home") {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    ws = new WebSocket(url);
+    let url;
+    if (location.hash === '#init') {
+      url = "/localhost"
+    } else {
+      url = window.location.pathname;
+    }
+    ws = new WebSocket(`ws:/${url}:8080`);
 
     // listening for any change in the sliders in ui
     const zoomSlider = document.getElementById("zoomX");
