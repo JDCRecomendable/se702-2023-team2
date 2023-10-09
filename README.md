@@ -14,6 +14,9 @@ The application has the following functionalities (complete version in the main 
 - Able to reset the aggregated display showing the emoticon sidebar emojis sent to you by the other participants.
 - Log statistics generated and printed to the developer console in an aggregated format outlining the frequency of the user's interaction with the various interactive features in the application such as the emoticon sidebar and zoom affordances.
 
+## GitHub URL
+```https://github.com/JDCRecomendable/se702-2023-team2.git```
+
 ## Required Dependencies and system specifications
 To run this project it is required that the device has npm and node installed. 
 To check if you have the above two technologies installed enter the following two commands into a terminal:
