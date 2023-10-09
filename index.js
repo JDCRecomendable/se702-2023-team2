@@ -282,6 +282,7 @@ const initializePeer = () => {
 
       // local and remote video div elements
       const localVideo = document.getElementById("localVideo");
+
       const remoteVideo = document.getElementById("remoteVideo");
 
       localVideo.srcObject = stream;
