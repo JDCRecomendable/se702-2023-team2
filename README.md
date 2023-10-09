@@ -41,6 +41,14 @@ It would also be optimal for the node and npm installations to be the latest sta
 
 The branches are used as permutations during the research study with participants, the emoticons sidebar is excluded from the human participant study aspect of the project.
 
+## Technologies and dependencies used in the project
+- SimplePeer WebRTC
+- Webpack (Bundling js files)
+- WebSockets
+- Node
+- npm (package manager)
+
+
 ## Instructions to Run 
 
 ### Initial setup 
