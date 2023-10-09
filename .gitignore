@@ -244,11 +244,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-## This project does not use a repo-wide package.json.
-## Instead, each package has its own package.json.
-/package.json
-/package-lock.json
-
 
 # PYTHON
 
