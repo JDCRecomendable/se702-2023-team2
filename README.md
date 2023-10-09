@@ -18,6 +18,14 @@ If either of the above two commands throw an error, this means that it is not in
 
 The branches are used in as permutations during the research study with participants, the emoticons sidebar is excluded from the human participant study aspect of the project.
 
+## Technologies and dependencies used in the project
+- SimplePeer WebRTC
+- Webpack (Bundling js files)
+- WebSockets
+- Node
+- npm (package manager)
+
+
 ## Instructions to Run 
 
 ### Initial setup 
