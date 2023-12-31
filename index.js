@@ -83,13 +83,7 @@ if (window.location.pathname === "/home") {
 
     audioTracks.forEach((track) => {
       track.enabled = !track.enabled; // Toggle microphone
-
-      if (toggleAudio) {
-        toggleMicButton.style.background = "#FF0000";
-      } else {
-        toggleMicButton.style.background = "#879ceb";
-      }
-
+      toggleMicButton.style.background = toggleAudio ? "#FF0000" : "#879ceb";
       toggleAudio = !toggleAudio;
     });
   });
@@ -101,18 +95,12 @@ if (window.location.pathname === "/home") {
 
     videoTracks.forEach((track) => {
       track.enabled = !track.enabled; // Toggle camera
-
-      if (toggleVideo) {
-        toggleCameraButton.style.background = "#FF0000";
-      } else {
-        toggleCameraButton.style.background = "#879ceb";  
-      }
-
+      toggleCameraButton.style.background = toggleVideo ? "#FF0000" : "#879ceb";
       toggleVideo = !toggleVideo; // Corrected this line
     });
   });
 
- // event listeners for panning the video stream
+  // event listeners for panning the video stream
   let panTimer;
 
   panLeftButton.addEventListener("mousedown", () => {
@@ -221,12 +209,8 @@ if (window.location.pathname === "/home") {
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    let url;
-    if (location.hash === '#init') {
-      url = "/localhost"
-    } else {
-      url = window.location.pathname;
-    }
+    let url =
+      location.hash === "#init" ? "/localhost" : window.location.pathname;
     ws = new WebSocket(`ws:/${url}:8080`);
 
     // listening for any change in the sliders in ui
@@ -394,15 +378,10 @@ const processMessage = (message) => {
 
 const showConnectionStatus = (successful) => {
   const connectionStatusDiv = document.querySelector(".connection-success");
-
-  if (successful) {
-    connectionStatusDiv.style.backgroundColor = "green";
-    connectionStatusDiv.innerHTML = "<p>Connection successful!</p>";
-  } else {
-    connectionStatusDiv.style.backgroundColor = "red";
-    connectionStatusDiv.innerHTML = "<p>Connection failed!</p>";
-  }
-
+  connectionStatusDiv.style.backgroundColor = successful ? "green" : "red";
+  connectionStatusDiv.innerHTML = `<p>Connection ${
+    successful ? "successful" : "failed"
+  }!</p>`;
   connectionStatusDiv.style.display = "block";
 
   setTimeout(() => {
